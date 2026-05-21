@@ -1,4 +1,7 @@
 import { Eye, EyeOff, Lock, KeyRound, UserPlus, Mail, User, GraduationCap, Presentation, Briefcase, UserCheck, Hash} from 'lucide-react';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button'
+import { RadioCardGroup } from '../ui/RadioCardGroup'
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -6,6 +9,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../contexts/AuthContext';
 import config from '../config'
 import { registerSchema, type RegisterFormData } from '../schemas/auth.schemas';
+
+const typeOptions: RadioOptions[] = [
+  { label: 'Aluno', value: 'ALUNO', icon: <GraduationCap size={20} /> },
+  { label: 'Professor', value: 'PROFESSOR', icon: <Presentation size={20} /> }
+]
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -87,42 +95,41 @@ export const Signup = () => {
             )}
 
             <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-text-main" htmlFor="nome">
-                  Nome Completo
-                </label>
-                <div className="relative flex items-center">
-                  <User className="absolute left-3 text-text-muted" size={20}/>
-                  <input
-                    {...register('nome')}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-input-bg text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
-                    id="nome"
-                    type="text"
-                    placeholder="Seu nome completo"
-                    disabled={isSubmitting || sucesso}
-                  />
-                </div>
-                {errors.nome && <p className="text-xs font-medium text-error mt-0.5">{errors.nome.message}</p>}
-              </div>
+              <Input
+                id="nome"
+                label="Nome Completo"
+                type="text"
+                placeholder="Seu nome completo"
+                icon={<User size={20}/>}
+                error={errors.nome?.message}
+                disabled={isSubmitting || sucesso}
+                {...register('nome')}
+              />
+
+              <Input
+                id="email"
+                label="E-mail"
+                type="email"
+                placeholder="exemplo@geochamada.com"
+                icon={<Mail size={20}/>}
+                error={errors.email?.message}
+                disabled={isSubmitting || sucesso}
+                {...register('email')}
+              />
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-text-main" htmlFor="email">
-                  E-mail
+                <label className="text-sm font-semibold text-text-main">
+                  Tipo de Usuário
                 </label>
-                <div className="relative flex items-center">
-                  <Mail className="absolute left-3 text-text-muted" size={20}/>
-                  <input
-                    {...register('email')}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-input-bg text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
-                    id="email"
-                    type="email"
-                    placeholder="exemplo@geochamada.com"
-                    disabled={isSubmitting || sucesso}
-                  />
-                </div>
-                {errors.email && <p className="text-xs font-medium text-error mt-0.5">{errors.email.message}</p>}
+                <RadioCardGroup
+                  options={typeOptions}
+                  selectedValue={selectedType}
+                  registration={register('tipo')}
+                  disabled={isSubmitting || sucesso}
+                />
               </div>
 
+              {/*
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-semibold text-text-main">
                   Tipo de Usuário
@@ -148,6 +155,7 @@ export const Signup = () => {
                   </label>
                 </div>
               </div>
+              */}
 
               {selectedType === 'ALUNO' && (
                 <div className="flex flex-col gap-1.5 animate-fadeIn">
@@ -189,70 +197,60 @@ export const Signup = () => {
                 </div>
               )}
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-text-main" htmlFor="senha">
-                  Senha
-                </label>
-                <div className="relative flex items-center">
-                  <Lock className="absolute left-3 text-text-muted" size={20}/>
-                  <input
-                    {...register('senha')}
-                    className="w-full pl-10 pr-12 py-3 rounded-lg border border-border bg-input-bg text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
-                    id="senha"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Crie uma senha forte"
-                    disabled={isSubmitting || sucesso}
-                  />
+              <Input
+                id="senha"
+                label="Senha"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Crie uma senha forte"
+                icon={<Lock size={20} />}
+                error={errors.senha?.message}
+                disabled={isSubmitting || sucesso}
+                rightElement={
                   <button
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main"
                     type="button"
+                    className="text-text-muted hover:text-text-main cursor-pointer flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
-                </div>
-                {errors.senha && <p className="text-xs font-medium text-error mt-0.5">{errors.senha.message}</p>}
-              </div>
+                }
+                {...register('senha')}
+              />
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-text-main" htmlFor="confirmarSenha">
-                  Confirmar Senha
-                </label>
-                <div className="relative flex items-center">
-                  <KeyRound className="absolute left-3 text-text-muted" size={20}/>
-                  <input
-                    {...register('confirmarSenha')}
-                    className="w-full pl-10 pr-12 py-3 rounded-lg border border-border bg-input-bg text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
-                    id="confirmarSenha"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Repita a senha"
-                    disabled={isSubmitting || sucesso}
-                  />
+              <Input
+                id="confirmarSenha"
+                label="Confirmar Senha"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Repita a senha"
+                icon={<KeyRound size={20} />}
+                error={errors.confirmarSenha?.message}
+                disabled={isSubmitting || sucesso}
+                rightElement={
                   <button
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main"
                     type="button"
+                    className="text-text-muted hover:text-text-main cursor-pointer flex items-center"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
-                </div>
-                {errors.confirmarSenha && <p className="text-xs font-medium text-error mt-0.5">{errors.confirmarSenha.message}</p>}
-              </div>
+                }
+                {...register('confirmarSenha')}
+              />
 
-              <button
+              <Button
                 type="submit"
-                disabled={isSubmitting || sucesso}
-                className="w-full bg-brand hover:bg-brand-light text-white font-bold py-3.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                isLoading={isSubmitting}
+                loadingText="Cadastrando..."
+                icon={<UserCheck size={20}/>}
               >
-                <span>{isSubmitting ? 'Cadastrando...' : 'Criar minha conta'}</span>
-                {!isSubmitting && <UserCheck/>}
-              </button>
+                Criar conta
+              </Button>
             </form>
 
             <div className="mt-6 pt-6 border-t border-border dark:border-border-dark text-center">
               <p className="text-sm text-text-muted">
                 Já possui uma conta?{' '}
-                <button 
+                <button
                   onClick={() => navigate('/login')} 
                   className="text-brand-light font-bold hover:underline bg-transparent border-none cursor-pointer"
                   disabled={isSubmitting || sucesso}
