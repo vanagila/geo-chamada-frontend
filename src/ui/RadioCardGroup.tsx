@@ -16,7 +16,7 @@ interface ReadioCardGroupProps {
 
 export const RadioCardGroup = ({ options, selectedValue, registration, disabled }: ReadioCardGroupProps) => {
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className='grid grid-cols-2 gap-2'>
       {options.map((option) => {
         const isSelected = selectedValue === option.value;
 
@@ -30,14 +30,14 @@ export const RadioCardGroup = ({ options, selectedValue, registration, disabled 
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             <input
-              type="radio"
+              type='radio'
               value={option.value}
-              className="sr-only"
+              className='sr-only'
               disabled={disabled}
               {...registration}
             />
             <div>{option.icon}</div>
-            <span className="text-xs">{option.label}</span>
+            <span className='text-xs'>{option.label}</span>
           </label>
         );
       })}
