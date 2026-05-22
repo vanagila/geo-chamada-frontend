@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, useEffect, ReactNode} from 'react';
 import api from '../services/api';
 import config from '../config';
-import type { User, RegisterData, AuthContextType } from '../types/auth.types'
+import type { User, RegisterData, AuthContextType, LoginResponse } from '../types/auth.types'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -9,12 +9,12 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = localStorage.getItem(config.auth.token);
+    const token = localStorage.getItem(config.auth.tokenKey);
     const userData = localStorage.getItem(config.auth.userKey);
 
     if (token && userData) {
@@ -28,6 +28,47 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
     setLoading(false);
   }, []);
+
+  const login = async (username: string, password: string) => {
+    try {
+      const formData = new URLSearchParams();
+      formData.append('username', username);
+      formData.append('password', password);
+
+      const response = await api.post<LoginResponse>('/api/v1/auth/login', formData.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const { access_token } = response.data;
+      localStorage.setItem(config.auth.tokenKey, access_token)
+
+      return { success: true };
+    } catch (error: any) {
+      console.error('Erro no login:', error);
+      let errorMessage = 'Erro ao fazer login';
+
+      if (error.response?.data?.detail) {
+        if (Array.isArray(error.response.data.detail)) {
+          errorMessage = error.response.data.detail[0]?.msg || errorMessage;
+        } else if (typeof error.response.data.detail === 'string') {
+          errorMessage = error.response.data.detail;
+        }
+      }
+
+      return {
+        success: false,
+        error: errorMessage
+      };
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem(config.auth.tokenKey);
+    localStorage.removeItem(config.auth.userKey);
+    setUser(null);
+  }
 
   const register = async (data: RegisterData) => {
     try {
@@ -58,7 +99,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, register }}>
+    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -71,3 +112,5 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+export default AuthProvider;

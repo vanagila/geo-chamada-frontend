@@ -15,7 +15,7 @@ export const Button = ({children, isLoading, loadingText = 'Carregando...', icon
       {...props}
     >
       <span>{isLoading ? loadingText : children}</span>
-      {!isLoading && icon && <span className="flex items-center">{icon}</span>}
+      {!isLoading && icon && <span className='flex items-center'>{icon}</span>}
     </button>
   );
 }
