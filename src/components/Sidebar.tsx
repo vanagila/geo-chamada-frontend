@@ -11,25 +11,11 @@ const navItems = [
   { label: 'Relatórios', icon: <FileText size={20} />, path: '/relatorios' },
 ];
 
-export const Sidebar = () => {
+const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className='w-64 min-h-screen bg-card border-r border-border flex flex-col transition-colors'>
-      <div className='p-6 flex items-center gap-3'>
-        <div className='bg-brand/10 p-2 rounded-lg text-brand flex items-center justify-center'>
-          <MapPin size={24}/>
-        </div>
-        <div className='flex flex-col'>
-          <h1 className='text-text-main text-lg font-bold leading-none tracking-tight'>
-            GeoChamada
-          </h1>
-          <p className='text-text-muted text-ts font-medium uppercase tracking-wider mt-1'>
-            Dashboard
-          </p>
-        </div>
-      </div>
-
+    <aside className='w-64 h-full bg-card border-r border-border flex flex-col transition-colors'>
       <nav className='flex-1 px-4 py-4 flex flex-col gap-1.5'>
         {navItems.map((item) => (
           <NavLink
@@ -68,3 +54,5 @@ export const Sidebar = () => {
     </aside>
   );
 }
+
+export default Sidebar;
