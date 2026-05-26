@@ -32,3 +32,5 @@ const ProgressBar = ({ value, variant = 'brand', showLabel = true }: ProgressBar
     </div>
   );
 }
+
+export default ProgressBar;
