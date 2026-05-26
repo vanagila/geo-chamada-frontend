@@ -7,7 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
 }
 
-export const Button = ({children, isLoading, loadingText = 'Carregando...', icon, className = '', ...props}: ButtonProps) => {
+const Button = ({children, isLoading, loadingText = 'Carregando...', icon, className = '', ...props}: ButtonProps) => {
   return (
     <button
       disabled={isLoading || props.disabled}
@@ -19,3 +19,5 @@ export const Button = ({children, isLoading, loadingText = 'Carregando...', icon
     </button>
   );
 }
+
+export default Button;

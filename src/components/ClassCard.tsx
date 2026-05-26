@@ -1,5 +1,5 @@
 import { Clock, Radio } from 'lucide-react';
-import { Button } from '../ui/Button'
+import Button from '../ui/Button'
 
 interface ClassCardProps {
   nome: string;
@@ -48,3 +48,5 @@ const ClassCard = ({ nome, horario, sala, totalAlunos, status }: ClassCardProps)
     </div>
   );
 }
+
+export default ClassCard;

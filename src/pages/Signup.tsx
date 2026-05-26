@@ -1,7 +1,7 @@
 import { Eye, EyeOff, Lock, KeyRound, UserPlus, Mail, User, GraduationCap, Presentation, Briefcase, UserCheck, Hash} from 'lucide-react';
-import { Input } from '../ui/Input';
-import { Button } from '../ui/Button'
-import { RadioCardGroup } from '../ui/RadioCardGroup'
+import Input from '../ui/Input';
+import Button from '../ui/Button'
+import RadioCardGroup from '../ui/RadioCardGroup'
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';

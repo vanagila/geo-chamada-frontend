@@ -14,7 +14,7 @@ interface ReadioCardGroupProps {
   disabled?: boolean;
 }
 
-export const RadioCardGroup = ({ options, selectedValue, registration, disabled }: ReadioCardGroupProps) => {
+const RadioCardGroup = ({ options, selectedValue, registration, disabled }: ReadioCardGroupProps) => {
   return (
     <div className='grid grid-cols-2 gap-2'>
       {options.map((option) => {
@@ -42,5 +42,7 @@ export const RadioCardGroup = ({ options, selectedValue, registration, disabled 
         );
       })}
     </div>
-  )
+  );
 }
+
+export default RadioCardGroup;
