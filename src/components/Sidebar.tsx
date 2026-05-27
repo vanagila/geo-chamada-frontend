@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { MapPin, LayoutDashboard, BookOpen, Users, Presentation, GraduationCap, FileText, LogOut } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
 
 const navItems = [
   { label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
