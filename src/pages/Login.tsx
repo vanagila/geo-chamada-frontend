@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '../ui/Input';
 import Button from '../ui/Button'
-import { useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
 import config from '../config';
 
 const Login = () => {
@@ -23,7 +23,7 @@ const Login = () => {
     const result = await login(email, senha);
 
     if (result.success) {
-      console.log('login com sucesso');
+      navigate('/')
     } else {
       setError(result.error || 'Falha no login. Verifique suas credenciais.');
     }

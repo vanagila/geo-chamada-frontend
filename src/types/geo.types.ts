@@ -1,0 +1,18 @@
+export interface Coordenadas {
+  latitude: number;
+  longitude: number;
+}
+
+export interface UseGeolocationOptions {
+  enableHighAccuracy?: boolean;
+  timeout?: number;
+  onSuccess?: (coords: Coordenadas) => void;
+  onError?: (error: string) => void;
+}
+
+export interface UseGeolocationReturn {
+  coordernadas: Coordenadas | null;
+  carregando: boolean;
+  erro: string | null;
+  capturarLocalizacao: () => void;
+}

@@ -44,6 +44,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const { access_token } = response.data;
       localStorage.setItem(config.auth.tokenKey, access_token)
 
+      const userResponse = await api.get('api/v1/usuarios/me');
+      const userData = userResponse.data;
+      localStorage.setItem(config.auth.userKey, JSON.stringify(userData));
+      setUser(userData);
+
       return { success: true };
     } catch (error: any) {
       console.error('Erro no login:', error);
@@ -98,19 +103,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const value: AuthContextType = { user, loading, login, logout, register };
+
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('O useAuth deve ser usado dentro de um AuthProvider');
-  }
-  return context;
-};
+export { AuthContext };
 
 export default AuthProvider;
