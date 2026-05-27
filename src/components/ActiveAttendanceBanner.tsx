@@ -19,7 +19,7 @@ const ActiveAttendanceBanner = () => {
 
           <h2 className='text-2xl font-bold text-text-main'>Engenharia de Software I</h2>
           <p className='text-text-muted max-w-md mx-auto md:mx-0'>
-            A sua localização foi detectada dentro do raio permitido da Sala 302. Confirme a sua presença agora.
+            A sua localização foi detectada dentro do raio permitido. Confirme a sua presença agora.
           </p>
 
           <div className='flex items-center gap-4 justify-center md:justify-start'>
