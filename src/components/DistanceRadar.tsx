@@ -3,7 +3,7 @@ interface DistanceRadarProps {
   maxRadius?: number;
 }
 
-const DistanceRadar = () => {
+const DistanceRadar = ({ distance, maxRadius = 50 }: DistanceRadarProps) => {
   const percentage = Math.min((distance / maxRadius) * 100, 100);
   const isInRange = distance <= maxRadius;
   
