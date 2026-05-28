@@ -12,7 +12,15 @@ import TeacherDashboard from '../pages/Teacher/TeacherDashboard'
 import StudentDashboard from '../pages/Student/StudentDashboard'
 
 const AppRoutes = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className='min-h-screen flex items-center justify-center bg-app-bg text-brand font-bold'>
+        Carregando...
+      </div>
+    );
+  }
 
   const getDefaultRoute = () => {
     if (!user) return '/login';
