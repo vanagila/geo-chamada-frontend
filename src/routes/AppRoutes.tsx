@@ -8,6 +8,8 @@ import Signup from '../pages/Signup'
 import AdminDashboard from '../pages/Admin/AdminDashboard'
 // Professor
 import TeacherDashboard from '../pages/Teacher/TeacherDashboard'
+// Aluno
+import StudentDashboard from '../pages/Student/StudentDashboard'
 
 const AppRoutes = () => {
   const { user } = useAuth();
@@ -43,6 +45,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['PROFESSOR']}>
             <TeacherDashboard/>
+          </ProtectedRoute>
+        }
+      />
+
+      {/*Aluno*/}
+      <Route path='/aluno/dashboard'
+        element={
+          <ProtectedRoute allowedRoles={['ALUNO']}>
+            <StudentDashboard/>
           </ProtectedRoute>
         }
       />
