@@ -1,6 +1,7 @@
 import { MapPin, Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import Input from '../ui/Input';
 import Button from '../ui/Button'
 import useAuth from '../hooks/useAuth';
@@ -23,9 +24,11 @@ const Login = () => {
     const result = await login(email, senha);
 
     if (result.success) {
+      toast.success('Login realizado com sucesso.')
       navigate('/')
     } else {
-      setError(result.error || 'Falha no login. Verifique suas credenciais.');
+      const errorMessage = result.error || 'Falha no login. Verifique suas credenciais.'
+      setError(errorMessage);
     }
     setLoading(false);
   };
