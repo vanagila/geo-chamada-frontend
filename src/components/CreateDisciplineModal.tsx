@@ -12,9 +12,10 @@ interface CreateDisciplineModalProps {
   onClose: () => void;
   onSubmit: (data: DisciplinaFormData) => void;
   isSubmitting?: boolean;
+  initialData?: Disciplina | null;
 }
 
-const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting }: CreateDisciplineModalProps) => {
+const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initialData }: CreateDisciplineModalProps) => {
   const {
     register,
     handleSubmit,
@@ -31,13 +32,27 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting }: Crea
   });
 
   useEffect(() => {
+    if (initialData) {
+      reset({
+        carga_horaria: initialData.carga_horaria,
+        nome: initialData.nome,
+        codigo: initialData.codigo,
+        descricao: initialData.descricao
+      });
+    } else {
+      reset({
+        carga_horaria: 60,
+        nome: '',
+        codigo: '',
+        descricao: ''
+      });
+    }
     if (!isOpen) reset({ carga_horaria: 60, nome: '', codigo: '', descricao: '' });
-  }, [isOpen, reset]);
+  }, [isOpen, reset, initialData]);
 
   if (!isOpen) return null;
 
   const handleFormSubmit = (data: DisciplinaFormData) => {
-    console.log("DADOS QUE O REACT-HOOK-FORM LEU:", data);
     data.carga_horaria = Number(data.carga_horaria);
     onSubmit(data);
   }
@@ -109,7 +124,7 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting }: Crea
               Cancelar
             </button>
             <Button type='submit' isLoading={isSubmitting} className='px-6 py-2.5 w-auto shadow-lg hover:brightness-110'>
-              Criar Disciplina
+              {isSubmitting ? 'Salvando...' : initialData ? 'Atualizar' : 'Criar'}
             </Button>
           </div>
         </form>

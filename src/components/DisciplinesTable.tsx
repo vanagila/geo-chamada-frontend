@@ -2,34 +2,11 @@ import { useState } from 'react';
 import { Calculator, FlaskConical, Code, Info, Edit, Trash2, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
 import type { Disciplina } from '../types/discipline.types'
 
-{/*
-interface DisciplineRowProps {
-  id: string;
-  nome: string;
-  descricao: string;
-  codigo: string;
-  cargaHoraria: number;
-  professor: { nome: string; avatarUrl?: string };
-  turmas: string[];
-  icon: React.ReactNode;
-  iconBgClass: string;
-  iconColorClass: string;
-}
-*/}
-
 interface DisciplineRowProps {
   discipline: Disciplina;
   onEdit: (discipline: Disciplina) => void;
   onDelete: (id: number) => void;
 }
-
-{/*
-const mockDisciplinas: Disciplina[] = [
-  { id: '1', nome: 'Cálculo I', descricao: 'Estudo de limites, derivadas e integrais...', codigo: 'MAT101', cargaHoraria: 60, professor: { nome: 'Dr. Ricardo Silva', avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDM1FzkroP5tpXYcZlj_h29KFQoucadNhKDLYtq5LQ9Tnod5I3WEeWX0BzsDh4Ak-yY1psOd8QU7TPAi1XlptZwhiVucUaiYAi_NWjK4IeqLsrKrQn3Z1cmNtpwZjPUzHa3WXG_ttWaqxyVDbyC8b5pEJv3wk4dsZjDAEOZfGDWSvT7GuhuqslsS1Ma-sw8Lg3CTT5S87USHiOrwt-ZB83BvtXWOHVG2MKLGCTopk6P5Og_-m79HeqTO3OKkWZxQ1ENtSq-YobbB24' }, turmas: ['T01', 'T02'], icon: <Calculator size={20} />, iconBgClass: 'bg-brand/10', iconColorClass: 'text-brand' },
-  { id: '2', nome: 'Física Geral II', descricao: 'Termodinâmica, oscilações, ondas e fluidos...', codigo: 'FIS202', cargaHoraria: 80, professor: { nome: 'Dra. Amanda Costa', avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwAPdCfRgUTo7YMV_6LoIZRrcgu0bVIGH1ZAQ-jTlzbWMPyRnMyA264wTeoC-Tfbkmnp0AFrNt7c81DmC1A7jdqDM2awcXFiICMO_ruV-W8J1A0Zz94VtBfaeYe9F6rkpO-3TGpUtv7SO1ibfUeplZBe2CDawwiNKF_OuZ_p-8NYtB1452uUf7HZ0FmTyJ0TdE6ZeHpK0eH4-797uuKpzqtgHzMdnUoGE1fFRpDil7Hf3UAIOwSmiCN3Zeyva_2e2YmQ4kSzRMrdU' }, turmas: ['T05'], icon: <FlaskConical size={20} />, iconBgClass: 'bg-purple-500/10', iconColorClass: 'text-purple-500' },
-  { id: '3', nome: 'Algoritmos e Estruturas', descricao: 'Lógica de programação e análise de complexidade...', codigo: 'CC103', cargaHoraria: 60, professor: { nome: 'Prof. Marcelo Souza', avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCGmFd-uLzlByohW61RxfYoCQr24AdDHhVnCQp9Y5vnSDO0V8Zzxe9gkFrkQt9vhbnvc1OhrvqCxdGrbXynDr-F2NyuwfBy73Uo8AQsgEGw5lnleBzfczTeqTHyUQbr-yrdwp5-ZNhzwqR78dH-CK8ryO4he2FkMR0GkGAcfkzdaHKOpNN5cKKGqKTFS6bjSk24HnjBgG-aEqfoBjpDULjuLMZ2XY1MTdCw5pN9LaXy5zGeD4vbx3osCSy3gYHe5YytRaHsQJ1Vth4' }, turmas: ['T01', 'T03', 'T04'], icon: <Code size={20} />, iconBgClass: 'bg-success/10', iconColorClass: 'text-success' }
-];
-*/}
 
 const DisciplineRow = ({ discipline, onEdit, onDelete }: DisciplineRowProps) => {
   const [showTooltip, setShowTooltip] = useState(false);

@@ -7,21 +7,53 @@ import DisciplineFilters from '../../components/DisciplineFilters';
 import DisciplinesTable from '../../components/DisciplinesTable';
 import CreateDisciplineModal from '../../components/CreateDisciplineModal'
 import Button from '../../ui/Button';
-import type { Disciplina } from '../../types/discipline.types'
+import type { Disciplina, DisciplinaFormData } from '../../types/discipline.types'
 
 const Disciplines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDiscipline, setEditingDiscipline] = useState<Disciplina | null>(null);
 
   const {
     disciplines,
     isLoading,
     createDiscipline,
-    isCreating
+    isCreating,
+    isUpdating,
+    updateDiscipline
   } = useDiscipline();
 
-  const handleEdit = (discipline: Disciplina) => {
-    console.log("oi")
+  const handleSubmit = (data: DisciplinaFormData) => {
+    if (editingDiscipline) {
+      updateDiscipline({
+        id: editingDiscipline.id,
+        data: {
+          nome: data.nome,
+          codigo: data.codigo,
+          descricao: data.descricao,
+          carga_horaria: data.carga_horaria
+        },
+      });
+    } else {
+      createDiscipline({
+        nome: data.nome,
+        codigo: data.codigo,
+        descricao: data.descricao,
+        carga_horaria: data.carga_horaria
+      });
+    }
+    setIsModalOpen(false)
+    setEditingDiscipline(null)
   };
+
+  const handleEdit = (discipline: Disciplina) => {
+    setEditingDiscipline(discipline);
+    setIsModalOpen(true);
+  };
+
+  const handleNew = () => {
+    setEditingDiscipline(null);
+    setIsModalOpen(true);
+  }
 
   const handleDelete = (id: number) => {
     console.log("oi")
@@ -44,7 +76,7 @@ const Disciplines = () => {
                 Visualize, edite e crie novas disciplinas curriculares.
               </p>
             </div>
-            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5' onClick={() => setIsModalOpen(true)}>
+            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5' onClick={handleNew}>
               Nova Disciplina
             </Button>
           </div>
@@ -52,7 +84,7 @@ const Disciplines = () => {
           <DisciplineFilters />
 
           <DisciplinesTable
-            disciplines={disciplines}
+            disciplines={disciplines || []}
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDelete}
@@ -62,13 +94,13 @@ const Disciplines = () => {
 
       <CreateDisciplineModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={(data) => {
-          createDiscipline(data, {
-            onSuccess: () => setIsModalOpen(false)
-          });
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingDiscipline(null);
         }}
-        isSubmitting={isCreating}
+        onSubmit={handleSubmit}
+        initialData={editingDiscipline}
+        isSubmitting={isCreating || isUpdating}
       />
     </div>
   );

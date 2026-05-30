@@ -21,7 +21,19 @@ const useDisciplines = () => {
       queryClient.invalidateQueries({ queryKey: DISCIPLINES_QUERY_KEY });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.details || 'Erro ao criar disciplina');
+      toast.error(error.response?.data?.detail || 'Erro ao criar disciplina');
+    },
+  });
+
+  const { mutate: updateDiscipline, isPending: isUpdating } = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: DisciplinaUpdate }) => 
+      disciplineService.update(id, data),
+    onSuccess: () => {
+      toast.success('Disciplina atualizada com sucesso');
+      queryClient.invalidateQueries({ queryKey: DISCIPLINES_QUERY_KEY });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data.detail || 'Erro ao atualizar disciplina');
     },
   });
 
@@ -31,7 +43,9 @@ const useDisciplines = () => {
     error,
     refetch,
     createDiscipline,
-    isCreating
+    isCreating,
+    updateDiscipline,
+    isUpdating
   };
 };
 
