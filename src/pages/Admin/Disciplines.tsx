@@ -14,7 +14,9 @@ const Disciplines = () => {
 
   const {
     disciplines,
-    isLoading
+    isLoading,
+    createDiscipline,
+    isCreating
   } = useDiscipline();
 
   const handleEdit = (discipline: Disciplina) => {
@@ -53,7 +55,7 @@ const Disciplines = () => {
             disciplines={disciplines}
             isLoading={isLoading}
             onEdit={handleEdit}
-            onDelet={handleEdit}
+            onDelete={handleDelete}
           />
         </main>
       </div>
@@ -61,6 +63,12 @@ const Disciplines = () => {
       <CreateDisciplineModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSubmit={(data) => {
+          createDiscipline(data, {
+            onSuccess: () => setIsModalOpen(false)
+          });
+        }}
+        isSubmitting={isCreating}
       />
     </div>
   );

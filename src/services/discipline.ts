@@ -4,7 +4,6 @@ import type { Disciplina, DisciplinaCreate, DisciplinaUpdate, DisciplinaResponse
 const disciplineService = {
   list: async (params?: { skip?: number; limit?: number }): Promise<DisciplinaResponse[]> => {
     const response = await api.get('/api/v1/disciplinas/', { params });
-    console.log(response.data)
     return response.data
   },
 
@@ -19,7 +18,7 @@ const disciplineService = {
   },
 
   create: async (data: DisciplinaCreate): Promise<Disciplina> => {
-    const response = await api.post('/api/v1/disciplinas', data);
+    const response = await api.post('/api/v1/disciplinas/', data);
     return response.data
   },
 

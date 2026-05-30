@@ -1,14 +1,46 @@
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { X, BookOpen } from 'lucide-react';
 import Button from '../ui/Button'; 
 import Input from '../ui/Input';
+import { disciplineSchema } from '../schemas/discipline.schemas'
+import type { Disciplina, DisciplinaFormData } from '../types/discipline.types';
 
 interface CreateDisciplineModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit: (data: DisciplinaFormData) => void;
+  isSubmitting?: boolean;
 }
 
-const CreateDisciplineModal = ({ isOpen, onClose }: CreateDisciplineModal) => {
+const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting }: CreateDisciplineModalProps) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<DisciplinaFormData>({
+    resolver: zodResolver(disciplineSchema),
+    defaultValues: {
+      carga_horaria: 60,
+      nome: '',
+      codigo: '',
+      descricao: ''
+    }
+  });
+
+  useEffect(() => {
+    if (!isOpen) reset({ carga_horaria: 60, nome: '', codigo: '', descricao: '' });
+  }, [isOpen, reset]);
+
   if (!isOpen) return null;
+
+  const handleFormSubmit = (data: DisciplinaFormData) => {
+    console.log("DADOS QUE O REACT-HOOK-FORM LEU:", data);
+    data.carga_horaria = Number(data.carga_horaria);
+    onSubmit(data);
+  }
 
   return (
     <div className='fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4 animate-in fade-in duration-200'>
@@ -23,13 +55,14 @@ const CreateDisciplineModal = ({ isOpen, onClose }: CreateDisciplineModal) => {
           </button>
         </div>
 
-        <form className='p-6 space-y-5' onSubmit={(e) => { e.preventDefault(); }}>
+        <form className='p-6 space-y-5' onSubmit={handleSubmit(handleFormSubmit)}>
           <Input 
             id='nome'
             label='Nome da Disciplina'
             placeholder='Ex: Cálculo I'
             icon={<BookOpen size={20} />}
-            required
+            {...register('nome')}
+            error={errors.nome?.message}
           />
 
           <div className='grid grid-cols-2 gap-4'>
@@ -37,16 +70,18 @@ const CreateDisciplineModal = ({ isOpen, onClose }: CreateDisciplineModal) => {
               id='codigo'
               label='Código'
               placeholder='Ex: MAT101'
-              required
+              {...register('codigo')}
+              error={errors.codigo?.message}
             />
 
             <Input
-              id='cargaHoraria'
+              id='carga_horaria'
               type='number'
               label='Carga Horária'
               placeholder='60'
               rightElement={<span className='text-xs font-medium text-text-muted pr-3'>horas</span>}
-              required
+              {...register('carga_horaria', { valueAsNumber: true })}
+              error={errors.carga_horaria?.message}
             />
           </div>
 
@@ -56,21 +91,24 @@ const CreateDisciplineModal = ({ isOpen, onClose }: CreateDisciplineModal) => {
             </label>
             <textarea 
               id='descricao'
+              {...register('descricao')}
               className='w-full px-4 py-2.5 bg-input-bg border border-border rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm outline-none text-text-main resize-none' 
               placeholder='Descreva os objetivos e conteúdos da disciplina...' 
               rows={3}
             ></textarea>
+            {errors.descricao && <p className='text-xs font-medium text-error mt-1'>{errors.descricao.message}</p>}
           </div>
 
           <div className='flex items-center justify-end gap-3 pt-4 border-t border-border'>
             <button 
               type='button'
               onClick={onClose}
+              disabled={isSubmitting}
               className='px-6 py-2.5 rounded-lg font-bold text-sm text-text-muted hover:bg-input-bg transition-colors cursor-pointer'
             >
               Cancelar
             </button>
-            <Button type='submit' className='px-6 py-2.5 w-auto shadow-lg hover:brightness-110'>
+            <Button type='submit' isLoading={isSubmitting} className='px-6 py-2.5 w-auto shadow-lg hover:brightness-110'>
               Criar Disciplina
             </Button>
           </div>

@@ -14,11 +14,24 @@ const useDisciplines = () => {
     staleTime: 1000 * 60 * 5
   });
 
+  const { mutate: createDiscipline, isPending: isCreating } = useMutation({
+    mutationFn: (data: DisciplinaCreate) => disciplineService.create(data),
+    onSuccess: () => {
+      toast.success('Disciplina criada com sucesso');
+      queryClient.invalidateQueries({ queryKey: DISCIPLINES_QUERY_KEY });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.details || 'Erro ao criar disciplina');
+    },
+  });
+
   return {
     disciplines,
     isLoading,
     error,
     refetch,
+    createDiscipline,
+    isCreating
   };
 };
 
