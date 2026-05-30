@@ -1,14 +1,29 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
+import useDiscipline from '../../hooks/useDiscipline'
 import Sidebar from '../../components/Sidebar.tsx';
 import Header from '../../components/Header';
 import DisciplineFilters from '../../components/DisciplineFilters';
 import DisciplinesTable from '../../components/DisciplinesTable';
 import CreateDisciplineModal from '../../components/CreateDisciplineModal'
 import Button from '../../ui/Button';
+import type { Disciplina } from '../../types/discipline.types'
 
 const Disciplines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    disciplines,
+    isLoading
+  } = useDiscipline();
+
+  const handleEdit = (discipline: Disciplina) => {
+    console.log("oi")
+  };
+
+  const handleDelete = (id: number) => {
+    console.log("oi")
+  };
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -34,7 +49,12 @@ const Disciplines = () => {
 
           <DisciplineFilters />
 
-          <DisciplinesTable />
+          <DisciplinesTable
+            disciplines={disciplines}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelet={handleEdit}
+          />
         </main>
       </div>
 
