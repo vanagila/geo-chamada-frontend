@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import Sidebar from '../../components/Sidebar.tsx';
 import Header from '../../components/Header';
 import DisciplineFilters from '../../components/DisciplineFilters';
 import DisciplinesTable from '../../components/DisciplinesTable';
+import CreateDisciplineModal from '../../components/CreateDisciplineModal'
 import Button from '../../ui/Button';
 
 const Disciplines = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
       <Header />
@@ -23,7 +27,7 @@ const Disciplines = () => {
                 Visualize, edite e crie novas disciplinas curriculares.
               </p>
             </div>
-            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5'>
+            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5' onClick={() => setIsModalOpen(true)}>
               Nova Disciplina
             </Button>
           </div>
@@ -33,6 +37,11 @@ const Disciplines = () => {
           <DisciplinesTable />
         </main>
       </div>
+
+      <CreateDisciplineModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
