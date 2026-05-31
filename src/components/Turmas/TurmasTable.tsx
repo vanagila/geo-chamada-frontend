@@ -1,5 +1,6 @@
-import Turma from '../types/turmas.types'
-import TableWrapper from './TableWrapper';
+import type { Turma } from '../../types/turmas.types';
+import TableWrapper from '../../components/TableWrapper.tsx';
+import TurmaRow from './TurmaRow'
 
 interface TurmasTableProps {
   turmas: Turma[];
@@ -8,14 +9,14 @@ interface TurmasTableProps {
 
 const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
   return (
-    <TableWrapper>
+    <TableWrapper totalItems={turmas.length} isLoading={isLoading}>
       <thead>
         <tr className='bg-input-bg border-b border-border'>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Código</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Disciplina</th>
-          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Semestre/Ano</th>
+          <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Semestre/Ano</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Horário</th>
-          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Início/Fim</th>
+          <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Início/Fim</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
         </tr>
       </thead>
@@ -37,11 +38,9 @@ const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
               </tr>
         ) : (
           turmas.map((turma) => (
-            <DisciplineRow 
+            <TurmaRow 
               key={turma.id} 
               turma={turma} 
-              onEdit={onEdit}
-              onDelete={onDelete}
             />
           ))
         )}

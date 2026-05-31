@@ -1,16 +1,17 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import ProtectedRoute from './ProtectedRoute'
+import ProtectedRoute from './ProtectedRoute';
 // Paginas publicas
-import Login from '../pages/Login'
-import Signup from '../pages/Signup'
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 // Admin
-import AdminDashboard from '../pages/Admin/AdminDashboard'
-import Disciplines from '../pages/Admin/Disciplines.tsx'
+import AdminDashboard from '../pages/Admin/AdminDashboard';
+import Disciplines from '../pages/Admin/Disciplines';
+import Turmas from '../pages/Admin/Turmas'
 // Professor
-import TeacherDashboard from '../pages/Teacher/TeacherDashboard'
+import TeacherDashboard from '../pages/Teacher/TeacherDashboard';
 // Aluno
-import StudentDashboard from '../pages/Student/StudentDashboard'
+import StudentDashboard from '../pages/Student/StudentDashboard';
 
 const AppRoutes = () => {
   const { user, loading } = useAuth();
@@ -52,6 +53,13 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['ADMIN']}>
             <Disciplines/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/admin/turmas' 
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <Turmas/>
           </ProtectedRoute>
         }
       />

@@ -33,19 +33,17 @@ const TurmaRow = ({ turma }: TurmaRowProps) => {
           </div>
         </div>
       </td>
-      <td className='px-6 py-4 font-medium text-text-muted'>{turma.disciplina}</td>
-      <td className='px-6 py-4 font-medium text-text-muted'>{turma.semestre}</td>
-      <td className='px-6 py-4 font-medium text-text-muted'>{turma.horario}</td>
-      <td className='px-6 py-4 font-medium text-text-muted'>{turma.data_incio + turma.data_fim}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.disciplina}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.semestre}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.horario}</td>
+      <td className='px-6 py-4 font-medium text-right text-text-muted'>{turma.data_inicio} / {turma.data_fim}</td>
       <td className='px-6 py-4 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>
-          <button 
-            onClick={console.log('oi')}
+          <button
             className='p-2 hover:bg-brand/10 text-brand rounded-lg transition-colors cursor-pointer' title='Editar'>
             <Edit size={18} />
           </button>
           <button 
-            onClick={console.log('oi')}
             className='p-2 hover:bg-error/10 text-error rounded-lg transition-colors cursor-pointer' title='Excluir'>
             <Trash2 size={18} />
           </button>
