@@ -1,0 +1,131 @@
+import { useState } from 'react';
+import { Plus } from 'lucide-react';
+import useDiscipline from '../../hooks/useDiscipline'
+import Sidebar from '../../components/Sidebar.tsx';
+import Header from '../../components/Header';
+import DisciplineFilters from '../../components/DisciplineFilters';
+import DisciplinesTable from '../../components/DisciplinesTable';
+import CreateDisciplineModal from '../../components/CreateDisciplineModal'
+import ConfirmDeleteModal from '../../components/ConfirmDeleteModal'
+import Button from '../../ui/Button';
+import type { Disciplina, DisciplinaFormData } from '../../types/discipline.types'
+
+const Disciplines = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDiscipline, setEditingDiscipline] = useState<Disciplina | null>(null);
+  const [disciplineToDelete, setDisciplineToDelete] = useState<Disciplina | null>(null);
+
+  const {
+    disciplines,
+    isLoading,
+    createDiscipline,
+    isCreating,
+    isUpdating,
+    updateDiscipline,
+    deleteDiscipline,
+    isDeleting
+  } = useDiscipline();
+
+  const handleSubmit = (data: DisciplinaFormData) => {
+    if (editingDiscipline) {
+      updateDiscipline({
+        id: editingDiscipline.id,
+        data: {
+          nome: data.nome,
+          codigo: data.codigo,
+          descricao: data.descricao,
+          carga_horaria: data.carga_horaria
+        },
+      });
+    } else {
+      createDiscipline({
+        nome: data.nome,
+        codigo: data.codigo,
+        descricao: data.descricao,
+        carga_horaria: data.carga_horaria
+      });
+    }
+    setIsModalOpen(false)
+    setEditingDiscipline(null)
+  };
+
+  const handleEdit = (discipline: Disciplina) => {
+    setEditingDiscipline(discipline);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = (discipline: Disciplina) => {
+    setDisciplineToDelete(discipline);
+  }
+
+  const handleConfirmDelete = () => {
+    if (!disciplineToDelete) return;
+    
+    deleteDiscipline(disciplineToDelete.id, {
+      onSuccess: () => {
+        setDisciplineToDelete(null);
+      }
+    });
+  };
+
+  const handleNew = () => {
+    setEditingDiscipline(null);
+    setIsModalOpen(true);
+  }
+
+  return (
+    <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
+      <Header />
+
+      <div className='flex flex-1 overflow-hidden'>
+        <Sidebar />
+
+        <main className='flex-1 p-8 overflow-y-auto max-w-6xl mx-auto w-full space-y-6'>
+          <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2'>
+            <div>
+              <h1 className='text-2xl font-bold text-text-main tracking-tight'>
+                Gerenciamento de Disciplinas
+              </h1>
+              <p className='text-sm text-text-muted mt-1'>
+                Visualize, edite e crie novas disciplinas curriculares.
+              </p>
+            </div>
+            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5' onClick={handleNew}>
+              Nova Disciplina
+            </Button>
+          </div>
+
+          <DisciplineFilters />
+
+          <DisciplinesTable
+            disciplines={disciplines || []}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDeleteClick}
+          />
+        </main>
+      </div>
+
+      <CreateDisciplineModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingDiscipline(null);
+        }}
+        onSubmit={handleSubmit}
+        initialData={editingDiscipline}
+        isSubmitting={isCreating || isUpdating}
+      />
+
+      <ConfirmDeleteModal 
+        isOpen={!!disciplineToDelete}
+        onClose={() => setDisciplineToDelete(null)}
+        onConfirm={handleConfirmDelete}
+        itemName={disciplineToDelete?.nome}
+        isDeleting={isDeleting}
+      />
+    </div>
+  );
+}
+
+export default Disciplines;

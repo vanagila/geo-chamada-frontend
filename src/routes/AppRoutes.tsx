@@ -6,6 +6,7 @@ import Login from '../pages/Login'
 import Signup from '../pages/Signup'
 // Admin
 import AdminDashboard from '../pages/Admin/AdminDashboard'
+import Disciplines from '../pages/Admin/Disciplines.tsx'
 // Professor
 import TeacherDashboard from '../pages/Teacher/TeacherDashboard'
 // Aluno
@@ -47,6 +48,13 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route path='/admin/disciplinas' 
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <Disciplines/>
+          </ProtectedRoute>
+        }
+      />
 
       {/*Professor*/}
       <Route path='/professor/dashboard' 
@@ -56,6 +64,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
 
       {/*Aluno*/}
       <Route path='/aluno/dashboard'

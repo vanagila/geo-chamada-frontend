@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect, ReactNode} from 'react';
+import toast from 'react-hot-toast';
 import api from '../services/api';
 import config from '../config';
 import type { User, RegisterData, AuthContextType, LoginResponse } from '../types/auth.types'
@@ -35,7 +36,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       formData.append('username', username);
       formData.append('password', password);
 
-      const response = await api.post<LoginResponse>('/api/v1/auth/login', formData.toString(), {
+      const response = await api.post<LoginResponse>('api/v1/auth/login', formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -51,7 +52,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       return { success: true };
     } catch (error: any) {
-      console.error('Erro no login:', error);
       let errorMessage = 'Erro ao fazer login';
 
       if (error.response?.data?.detail) {
@@ -73,6 +73,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem(config.auth.tokenKey);
     localStorage.removeItem(config.auth.userKey);
     setUser(null);
+    toast.success('Você saiu da sua conta.')
   }
 
   const register = async (data: RegisterData) => {
