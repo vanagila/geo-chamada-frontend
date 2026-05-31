@@ -6,9 +6,10 @@ interface DisciplineRowProps {
   discipline: Disciplina;
   onEdit: (discipline: Disciplina) => void;
   onDelete: (id: number) => void;
+  isDeleting?: boolean;
 }
 
-const DisciplineRow = ({ discipline, onEdit, onDelete }: DisciplineRowProps) => {
+const DisciplineRow = ({ discipline, onEdit, onDelete, isDeleting }: DisciplineRowProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const getIconColor = (nome: string) => {
@@ -85,7 +86,7 @@ const DisciplineRow = ({ discipline, onEdit, onDelete }: DisciplineRowProps) => 
             <Edit size={18} />
           </button>
           <button 
-            onClick={() => onDelete(discipline.id)}
+            onClick={() => onDelete(discipline)}
             className='p-2 hover:bg-error/10 text-error rounded-lg transition-colors cursor-pointer' title='Excluir'>
             <Trash2 size={18} />
           </button>
@@ -99,7 +100,7 @@ interface DisciplinesTableProps {
   disciplines: Disciplina[];
   isLoading: boolean;
   onEdit: (disciplina: Disciplina) => void;
-  onDelete: (id: string) => void;
+  onDelete: (disciplina: Disciplina) => void;
 }
 
 const DisciplinesTable = ({ disciplines, isLoading, onEdit, onDelete }: DisciplinesTableProps) => {
