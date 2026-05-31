@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calculator, FlaskConical, Code, Info, Edit, Trash2, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
 import type { Disciplina } from '../types/discipline.types'
+import TableWrapper from  '../components/TableWrapper'
 
 interface DisciplineRowProps {
   discipline: Disciplina;
@@ -105,66 +106,45 @@ interface DisciplinesTableProps {
 
 const DisciplinesTable = ({ disciplines, isLoading, onEdit, onDelete }: DisciplinesTableProps) => {
   return (
-    <div className='bg-card border border-border rounded-xl overflow-hidden shadow-sm flex flex-col'>
-      <div className='overflow-x-auto'>
-        <table className='w-full text-left border-collapse'>
-          <thead>
-            <tr className='bg-input-bg border-b border-border'>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Nome</th>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Código</th>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Carga Horária</th>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Professor Responsável</th>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Turmas</th>
-              <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
-            </tr>
-          </thead>
-          <tbody className='divide-y divide-border'>
-            {isLoading ? (
-              <tr>
-                <td colSpan={6} className='text-center py-12'>
-                  <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto'></div>
-                  <p className='text-text-muted mt-2 font-medium'>Carregando disciplinas...</p>
-                </td>
+    <TableWrapper totalItems={disciplines.length} isLoading={isLoading}>
+      <thead>
+        <tr className='bg-input-bg border-b border-border'>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Nome</th>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Código</th>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Carga Horária</th>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Professor Responsável</th>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Turmas</th>
+          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
+        </tr>
+      </thead>
+      <tbody className='divide-y divide-border'>
+        {isLoading ? (
+          <tr>
+            <td colSpan={6} className='text-center py-12'>
+              <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto'></div>
+              <p className='text-text-muted mt-2 font-medium'>Carregando disciplinas...</p>
+            </td>
+          </tr>
+        ) : disciplines.length === 0 ? (
+          <tr>
+            <td colSpan={6} className='text-center py-12 bg-card'>
+              <BookOpen size={48} className='mx-auto text-border mb-4' />
+              <p className='text-text-main font-bold'>Nenhuma disciplina encontrada.</p>
+              <p className='text-sm text-text-muted mt-1'>Cadastre uma nova disciplina.</p>
+            </td>
               </tr>
-            ) : disciplines.length === 0 ? (
-              <tr>
-                <td colSpan={6} className='text-center py-12 bg-card'>
-                  <BookOpen size={48} className='mx-auto text-border mb-4' />
-                  <p className='text-text-main font-bold'>Nenhuma disciplina encontrada.</p>
-                  <p className='text-sm text-text-muted mt-1'>Cadastre uma nova disciplina para começar.</p>
-                </td>
-              </tr>
-            ) : (
-              disciplines.map((discipline) => (
-                <DisciplineRow 
-                  key={discipline.id} 
-                  discipline={discipline} 
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                />
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-      
-      {!isLoading && disciplines.length > 0 && (
-        <div className='px-6 py-4 bg-input-bg/50 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border'>
-          <p className='text-xs text-text-muted'>
-            Mostrando <span className='font-bold text-text-main'>{disciplines.length}</span> disciplinas
-          </p>
-          <div className='flex items-center gap-1'>
-            <button className='p-1.5 hover:bg-border rounded-lg text-text-muted disabled:opacity-50 transition-colors' disabled>
-              <ChevronLeft size={18} />
-            </button>
-            <button className='w-8 h-8 flex items-center justify-center rounded-lg bg-brand text-white text-sm font-bold shadow-sm transition-all cursor-pointer'>1</button>
-            <button className='p-1.5 hover:bg-border rounded-lg text-text-muted disabled:opacity-50 transition-colors' disabled>
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          disciplines.map((discipline) => (
+            <DisciplineRow 
+              key={discipline.id} 
+              discipline={discipline} 
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          ))
+        )}
+      </tbody>
+    </TableWrapper> 
   );
 }
 
