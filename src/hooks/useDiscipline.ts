@@ -37,6 +37,17 @@ const useDisciplines = () => {
     },
   });
 
+  const { mutate: deleteDiscipline, isPending: isDeleting } = useMutation({
+    mutationFn: (id: number) => disciplineService.delete(id),
+    onSuccess: () => {
+      toast.success('Disciplina deletada com sucesso');
+      queryClient.invalidateQueries({ queryKey: DISCIPLINES_QUERY_KEY });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data.detail || 'Erro ao deletar disciplina');
+    },
+  });
+
   return {
     disciplines,
     isLoading,
@@ -45,7 +56,9 @@ const useDisciplines = () => {
     createDiscipline,
     isCreating,
     updateDiscipline,
-    isUpdating
+    isUpdating,
+    deleteDiscipline,
+    isDeleting
   };
 };
 

@@ -6,12 +6,14 @@ import Header from '../../components/Header';
 import DisciplineFilters from '../../components/DisciplineFilters';
 import DisciplinesTable from '../../components/DisciplinesTable';
 import CreateDisciplineModal from '../../components/CreateDisciplineModal'
+import ConfirmDeleteModal from '../../components/ConfirmDeleteModal'
 import Button from '../../ui/Button';
 import type { Disciplina, DisciplinaFormData } from '../../types/discipline.types'
 
 const Disciplines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDiscipline, setEditingDiscipline] = useState<Disciplina | null>(null);
+  const [disciplineToDelete, setDisciplineToDelete] = useState<Disciplina | null>(null);
 
   const {
     disciplines,
@@ -19,7 +21,9 @@ const Disciplines = () => {
     createDiscipline,
     isCreating,
     isUpdating,
-    updateDiscipline
+    updateDiscipline,
+    deleteDiscipline,
+    isDeleting
   } = useDiscipline();
 
   const handleSubmit = (data: DisciplinaFormData) => {
@@ -50,14 +54,24 @@ const Disciplines = () => {
     setIsModalOpen(true);
   };
 
+  const handleDeleteClick = (discipline: Disciplina) => {
+    setDisciplineToDelete(discipline);
+  }
+
+  const handleConfirmDelete = () => {
+    if (!disciplineToDelete) return;
+    
+    deleteDiscipline(disciplineToDelete.id, {
+      onSuccess: () => {
+        setDisciplineToDelete(null);
+      }
+    });
+  };
+
   const handleNew = () => {
     setEditingDiscipline(null);
     setIsModalOpen(true);
   }
-
-  const handleDelete = (id: number) => {
-    console.log("oi")
-  };
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -87,7 +101,7 @@ const Disciplines = () => {
             disciplines={disciplines || []}
             isLoading={isLoading}
             onEdit={handleEdit}
-            onDelete={handleDelete}
+            onDelete={handleDeleteClick}
           />
         </main>
       </div>
@@ -101,6 +115,14 @@ const Disciplines = () => {
         onSubmit={handleSubmit}
         initialData={editingDiscipline}
         isSubmitting={isCreating || isUpdating}
+      />
+
+      <ConfirmDeleteModal 
+        isOpen={!!disciplineToDelete}
+        onClose={() => setDisciplineToDelete(null)}
+        onConfirm={handleConfirmDelete}
+        itemName={disciplineToDelete?.nome}
+        isDeleting={isDeleting}
       />
     </div>
   );
