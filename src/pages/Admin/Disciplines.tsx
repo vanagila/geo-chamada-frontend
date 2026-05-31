@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Plus } from 'lucide-react';
 import useDiscipline from '../../hooks/useDiscipline'
 import Sidebar from '../../components/Sidebar.tsx';
@@ -14,6 +14,9 @@ const Disciplines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDiscipline, setEditingDiscipline] = useState<Disciplina | null>(null);
   const [disciplineToDelete, setDisciplineToDelete] = useState<Disciplina | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterHours, setFilterHours] = useState('');
+  const [filterProfessor, setFilterProfessor] = useState('');
 
   const {
     disciplines,
@@ -73,6 +76,34 @@ const Disciplines = () => {
     setIsModalOpen(true);
   }
 
+  const professoresUnicos = useMemo(() => {
+    if (!disciplines) return [];
+    const nomes = disciplines.map(d => d.professor?.nome)
+      .filter(Boolean) as string[];
+
+    return Array.from(new Set(nomes)).sort();
+  }, [disciplines])
+
+  const filteredDisciplines = disciplines.filter((discipline) => {
+    const term = searchTerm.toLowerCase().trim();
+    const matchesSearch = term === '' || 
+      discipline.nome.toLowerCase().includes(term) || 
+      discipline.codigo.toLowerCase().includes(term);
+
+    let matchesHours = true;
+    if (filterHours !== '') {
+      if (filterHours === '90') {
+        matchesHours = discipline.carga_horaria >= 90;
+      } else {
+        matchesHours = discipline.carga_horaria === Number(filterHours);
+      }
+    }
+
+    const matchesProfessor = filterProfessor === '' || discipline.professor?.nome === filterProfessor;
+
+    return matchesSearch && matchesHours && matchesProfessor;
+  });
+
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
       <Header />
@@ -95,10 +126,18 @@ const Disciplines = () => {
             </Button>
           </div>
 
-          <DisciplineFilters />
+          <DisciplineFilters 
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            filterHours={filterHours}
+            onFilterHoursChange={setFilterHours}
+            filterProfessor={filterProfessor}
+            onFilterProfessorChange={setFilterProfessor}
+            professoresDisponiveis={professoresUnicos}
+          />
 
           <DisciplinesTable
-            disciplines={disciplines || []}
+            disciplines={filteredDisciplines}
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDeleteClick}
