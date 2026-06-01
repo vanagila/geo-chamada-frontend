@@ -2,7 +2,7 @@ import { MoreVertical, Plus, Search, Bell, Settings, Users, User, GraduationCap,
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar';
 import ActivityFeed from '../../components/ActivityFeed'
-import ClassesTable from '../../components/ClassesTable'
+import ClassSummary from '../../components/ClassSummary'
 import StatCard from '../../ui/StatCard';
 import ProgressBar from '../../ui/ProgressBar';
 import Badge from '../../ui/Badge';
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
             </div>
           </div>
           {/*resumo das turmas*/}
-          <ClassesTable/>
+          <ClassSummary/>
         </main>
       </div>
     </div>

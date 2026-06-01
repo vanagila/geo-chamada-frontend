@@ -2,7 +2,7 @@ import { Plus, MoreVertical } from 'lucide-react';
 import Badge from '../ui/Badge';
 import ProgressBar from '../ui/ProgressBar';
 
-interface ClassSummary {
+interface ClassSummaryProps {
   id: string;
   nome: string;
   professor: string;
@@ -10,13 +10,13 @@ interface ClassSummary {
   status: 'ativa' | 'pendente';
 }
 
-const mockClasses: ClassSummary[] = [
+const mockClasses: ClassSummaryProps[] = [
   { id: '1', nome: '3º Ano A - Matutino', professor: 'Dr. Marcos Oliveira', presenca: 94, status: 'ativa' },
   { id: '2', nome: '1º Ano C - Vespertino', professor: 'Dra. Eliane Rocha', presenca: 88, status: 'ativa' },
   { id: '3', nome: '2º Ano B - Matutino', professor: 'Prof. Sandra Lima', presenca: 72, status: 'pendente' },
 ];
 
-const ClassesTable = () => {
+const ClassSummary = () => {
   const getProgressVariant = (presenca: number) => {
     if (presenca >= 90) return 'success';
     if (presenca >= 80) return 'brand';
@@ -74,4 +74,4 @@ const ClassesTable = () => {
   );
 }
 
-export default ClassesTable;
+export default ClassSummary;
