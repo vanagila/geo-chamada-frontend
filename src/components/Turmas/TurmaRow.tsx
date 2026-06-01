@@ -21,6 +21,20 @@ const TurmaRow = ({ turma }: TurmaRowProps) => {
 
   const colors = getIconColor(turma.codigo);
 
+  const formatarData = (dataString?: string) => {
+    if (!dataString) return '-';
+    const partes = dataString.split('-');
+    if (partes.length === 3) {
+      return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    return dataString;
+  };
+
+  const formatarHorario = (horario?: string) => {
+    if (!horario) return '-';
+    return horario.substring(0, 5);
+  };
+
   return (
     <tr className='hover:bg-input-bg/50 transition-colors group'>
       <td className='px-6 py-4'>
@@ -33,10 +47,11 @@ const TurmaRow = ({ turma }: TurmaRowProps) => {
           </div>
         </div>
       </td>
-      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.disciplina}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.disciplina_nome}</td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.semestre}</td>
-      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.horario}</td>
-      <td className='px-6 py-4 font-medium text-right text-text-muted'>{turma.data_inicio} / {turma.data_fim}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.ano}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{formatarHorario(turma.horario)}</td>
+      <td className='px-6 py-4 font-medium text-center text-text-muted'>{formatarData(turma.data_inicio)} {formatarData(turma.data_fim)}</td>
       <td className='px-6 py-4 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>
           <button

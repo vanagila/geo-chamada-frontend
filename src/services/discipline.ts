@@ -7,7 +7,7 @@ const disciplineService = {
     return response.data
   },
 
-  getByid: async (id: number): Promise<DisciplinaResponse> => {
+  getById: async (id: number): Promise<DisciplinaResponse> => {
     const response = await api.get(`/api/v1/disciplinas/${id}`);
     return response.data
   },

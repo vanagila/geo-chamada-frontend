@@ -15,6 +15,13 @@ interface CreateDisciplineModalProps {
   initialData?: Disciplina | null;
 }
 
+const getDefaultValues = (initialData?: Disciplina | null): DisciplinaFormData => ({
+  nome: initialData?.nome || '',
+  codigo: initialData?.codigo || '',
+  descricao: initialData?.descricao || '',
+  carga_horaria: initialData?.carga_horaria || 60,
+});
+
 const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initialData }: CreateDisciplineModalProps) => {
   const {
     register,
@@ -23,39 +30,23 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initia
     formState: { errors }
   } = useForm<DisciplinaFormData>({
     resolver: zodResolver(disciplineSchema),
-    defaultValues: {
-      carga_horaria: 60,
-      nome: '',
-      codigo: '',
-      descricao: ''
-    }
+    defaultValues: getDefaultValues(initialData)
   });
 
   useEffect(() => {
-    if (initialData) {
-      reset({
-        carga_horaria: initialData.carga_horaria,
-        nome: initialData.nome,
-        codigo: initialData.codigo,
-        descricao: initialData.descricao
-      });
-    } else {
-      reset({
-        carga_horaria: 60,
-        nome: '',
-        codigo: '',
-        descricao: ''
-      });
+    if (!isOpen) {
+      reset(getDefaultValues(initialData));
     }
-    if (!isOpen) reset({ carga_horaria: 60, nome: '', codigo: '', descricao: '' });
   }, [isOpen, reset, initialData]);
 
-  if (!isOpen) return null;
-
   const handleFormSubmit = (data: DisciplinaFormData) => {
-    data.carga_horaria = Number(data.carga_horaria);
-    onSubmit(data);
-  }
+    onSubmit({
+      ...data,
+      carga_horaria: Number(data.carga_horaria),
+    });
+  };
+
+  if (!isOpen) return null;
 
   return (
     <div className='fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4 animate-in fade-in duration-200'>

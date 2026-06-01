@@ -5,13 +5,41 @@ import Sidebar from '../../components/Sidebar.tsx';
 import Header from '../../components/Header';
 import Button from '../../ui/Button'
 import TurmasTable from '../../components/Turmas/TurmasTable'
+import CreateTurmaModal from '../../components/Turmas/CreateTurmaModal'
+import type { Turma, TurmaFormData } from '../../types/turmas.types'
 
 const Turmas = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTurma, setEditingTurma] = useState<Disciplina | null>(null);
 
   const {
     turmas,
-    isLoading
+    isLoading,
+    createTurma,
+    isCreating,
+    updateTurma,
+    isUpdating
   } = useTurmas();
+
+  const handleSubmit = async (data: TurmaFormData) => {
+    if (editingTurma) {
+      await updateTurma({ id: editingTurma.id, data });
+    } else {
+      await createTurma(data);
+    }
+    setIsModalOpen(false)
+    setEditingTurma(null)
+  };
+
+  const handleEdit = (turma: Turma) => {
+    setEditingTurma(turma);
+    setIsModalOpen(true);
+  };
+
+  const handleNew = () => {
+    setEditingTurma(null);
+    setIsModalOpen(true);
+  }
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -30,7 +58,7 @@ const Turmas = () => {
                 Visualize, edite e crie novas turmas.
               </p>
             </div>
-            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5'>
+            <Button icon={<Plus size={18} />} className='w-full md:w-auto px-6 py-2.5' onClick={handleNew}>
               Nova Turma
             </Button>
           </div>
@@ -38,9 +66,21 @@ const Turmas = () => {
           <TurmasTable 
             turmas={turmas}
             isLoading={isLoading}
+            onEdit={handleEdit}
           />
         </main>
       </div>
+
+      <CreateTurmaModal 
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingTurma(null);
+        }}
+        onSubmit={handleSubmit}
+        initialData={editingTurma}
+        isSubmitting={isCreating || isUpdating}
+      />
     </div>
   );
 }

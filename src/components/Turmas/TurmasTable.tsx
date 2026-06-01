@@ -14,7 +14,8 @@ const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
         <tr className='bg-input-bg border-b border-border'>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Código</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Disciplina</th>
-          <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Semestre/Ano</th>
+          <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Semestre</th>
+          <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Ano</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Horário</th>
           <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Início/Fim</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
@@ -35,7 +36,7 @@ const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
               <p className='text-text-main font-bold'>Nenhuma turma encontrada.</p>
               <p className='text-sm text-text-muted mt-1'>Cadastre uma nova turma.</p>
             </td>
-              </tr>
+          </tr>
         ) : (
           turmas.map((turma) => (
             <TurmaRow 
