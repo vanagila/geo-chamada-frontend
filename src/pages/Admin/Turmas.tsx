@@ -6,11 +6,13 @@ import Header from '../../components/Header';
 import Button from '../../ui/Button'
 import TurmasTable from '../../components/Turmas/TurmasTable'
 import CreateTurmaModal from '../../components/Turmas/CreateTurmaModal'
+import ConfirmDeleteModal from '../../components/ConfirmDeleteModal.tsx'
 import type { Turma, TurmaFormData } from '../../types/turmas.types'
 
 const Turmas = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTurma, setEditingTurma] = useState<Disciplina | null>(null);
+  const [turmaToDelete, setTurmaToDelete] = useState<Turma | null>(null);
 
   const {
     turmas,
@@ -18,7 +20,9 @@ const Turmas = () => {
     createTurma,
     isCreating,
     updateTurma,
-    isUpdating
+    isUpdating,
+    deleteTurma,
+    isDeleting
   } = useTurmas();
 
   const handleSubmit = async (data: TurmaFormData) => {
@@ -34,6 +38,20 @@ const Turmas = () => {
   const handleEdit = (turma: Turma) => {
     setEditingTurma(turma);
     setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = (turma: Turma) => {
+    setTurmaToDelete(turma);
+  }
+
+  const handleConfirmDelete = () => {
+    if (!turmaToDelete) return;
+    
+    deleteTurma(turmaToDelete.id, {
+      onSuccess: () => {
+        setTurmaToDelete(null);
+      }
+    });
   };
 
   const handleNew = () => {
@@ -67,6 +85,7 @@ const Turmas = () => {
             turmas={turmas}
             isLoading={isLoading}
             onEdit={handleEdit}
+            onDelete={handleDeleteClick}
           />
         </main>
       </div>
@@ -80,6 +99,14 @@ const Turmas = () => {
         onSubmit={handleSubmit}
         initialData={editingTurma}
         isSubmitting={isCreating || isUpdating}
+      />
+
+      <ConfirmDeleteModal 
+        isOpen={!!turmaToDelete}
+        onClose={() => setTurmaToDelete(null)}
+        onConfirm={handleConfirmDelete}
+        itemName={turmaToDelete?.codigo}
+        isDeleting={isDeleting}
       />
     </div>
   );

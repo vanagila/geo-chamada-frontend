@@ -55,7 +55,7 @@ const CreateTurmaModal = ({ isOpen, onClose, onSubmit, isSubmitting, initialData
     <div className='fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4 animate-in fade-in duration-200'>
       <div className='bg-card w-full max-w-lg rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-border'>
         <div className='px-6 py-4 border-b border-border flex justify-between items-center bg-input-bg/50'>
-          <h2 className='text-lg font-bold text-text-main'>Nova Turma</h2>
+          <h2 className='text-lg font-bold text-text-main'> {initialData ? 'Editar Turma' : 'Nova Turma'}</h2>
           <button
             onClick={onClose}
             className='p-1.5 hover:bg-border rounded-full transition-colors text-text-muted cursor-pointer'

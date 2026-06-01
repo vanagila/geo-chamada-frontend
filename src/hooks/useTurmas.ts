@@ -37,6 +37,17 @@ const useTurmas = () => {
     },
   });
 
+  const { mutate: deleteTurma, isPending: isDeleting } = useMutation({
+    mutationFn: (id: number) => turmaService.delete(id),
+    onSuccess: () => {
+      toast.success('Turma deletada com sucesso');
+      queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data.detail || 'Erro ao deletar turma');
+    },
+  });
+
   return {
     turmas,
     isLoading,
@@ -45,7 +56,9 @@ const useTurmas = () => {
     createTurma,
     isCreating,
     updateTurma,
-    isUpdating
+    isUpdating,
+    deleteTurma,
+    isDeleting
   };
 };
 

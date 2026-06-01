@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Info, Edit, Trash2, BookOpen } from 'lucide-react';
 import type { Disciplina } from '../types/discipline.types'
 

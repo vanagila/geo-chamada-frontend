@@ -45,6 +45,7 @@ const TurmasTable = ({ turmas, isLoading, onEdit, onDelete }: TurmasTableProps) 
               key={turma.id} 
               turma={turma}
               onEdit={onEdit}
+              onDelete={onDelete}
             />
           ))
         )}

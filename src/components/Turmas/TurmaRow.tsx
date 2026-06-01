@@ -5,10 +5,11 @@ import type { Turma } from '../types/tumas.types'
 interface TurmaRowProps {
   turma: Turma;
   onEdit: (turma: Turma) => void;
-  onDelete: (turma: Turma) => void;
+  onDelete: (id: number) => void;
+  isDeleting?: boolean;
 }
 
-const TurmaRow = ({ turma, onEdit, onDelete }: TurmaRowProps) => {
+const TurmaRow = ({ turma, onEdit, onDelete, isDeleting }: TurmaRowProps) => {
   const getIconColor = (codigo: string) => {
     const colors = [
       { bg: 'bg-brand/10', text: 'text-brand' },
@@ -62,6 +63,7 @@ const TurmaRow = ({ turma, onEdit, onDelete }: TurmaRowProps) => {
             <Edit size={18} />
           </button>
           <button 
+            onClick={() => onDelete(turma)}
             className='p-2 hover:bg-error/10 text-error rounded-lg transition-colors cursor-pointer' title='Excluir'>
             <Trash2 size={18} />
           </button>
