@@ -4,9 +4,11 @@ import type { Turma } from '../types/tumas.types'
 
 interface TurmaRowProps {
   turma: Turma;
+  onEdit: (turma: Turma) => void;
+  onDelete: (turma: Turma) => void;
 }
 
-const TurmaRow = ({ turma }: TurmaRowProps) => {
+const TurmaRow = ({ turma, onEdit, onDelete }: TurmaRowProps) => {
   const getIconColor = (codigo: string) => {
     const colors = [
       { bg: 'bg-brand/10', text: 'text-brand' },
@@ -55,6 +57,7 @@ const TurmaRow = ({ turma }: TurmaRowProps) => {
       <td className='px-6 py-4 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>
           <button
+            onClick={() => onEdit(turma)}
             className='p-2 hover:bg-brand/10 text-brand rounded-lg transition-colors cursor-pointer' title='Editar'>
             <Edit size={18} />
           </button>

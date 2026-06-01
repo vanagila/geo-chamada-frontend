@@ -5,9 +5,11 @@ import TurmaRow from './TurmaRow'
 interface TurmasTableProps {
   turmas: Turma[];
   isLoading: boolean;
+  onEdit: (turma: Turma) => void;
+  onDelete: (turma: Turma) => void;
 }
 
-const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
+const TurmasTable = ({ turmas, isLoading, onEdit, onDelete }: TurmasTableProps) => {
   return (
     <TableWrapper totalItems={turmas.length} isLoading={isLoading}>
       <thead>
@@ -41,7 +43,8 @@ const TurmasTable = ({ turmas, isLoading }: TurmasTableProps) => {
           turmas.map((turma) => (
             <TurmaRow 
               key={turma.id} 
-              turma={turma} 
+              turma={turma}
+              onEdit={onEdit}
             />
           ))
         )}

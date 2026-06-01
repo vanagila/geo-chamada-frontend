@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import type { Disciplina } from '../types/discipline.types'
 import TableWrapper from  '../components/TableWrapper'
