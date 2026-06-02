@@ -8,9 +8,10 @@ interface TurmaRowProps {
   onDelete: (id: number) => void;
   isDeleting?: boolean;
   onAssignProfessor: (turma: Turma) => void;
+  onAssignAluno: (turma: Turma) => void;
 }
 
-const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor }: TurmaRowProps) => {
+const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAssignAluno }: TurmaRowProps) => {
 
   const getIconColor = (codigo: string) => {
     const colors = [
@@ -67,6 +68,7 @@ const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor }: Tu
             <UserPlus size={18} />
           </button>
           <button
+            onClick={() => onAssignAluno(turma)}
             className='p-2 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
             title='Matricular Aluno'
           >

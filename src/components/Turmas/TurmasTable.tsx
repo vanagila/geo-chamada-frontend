@@ -8,9 +8,10 @@ interface TurmasTableProps {
   onEdit: (turma: Turma) => void;
   onDelete: (turma: Turma) => void;
   onAssignProfessor: (turma: Turma) => void;
+  onAssignAluno: (turma: Turma) => void;
 }
 
-const TurmasTable = ({ turmas, isLoading, onEdit, onDelete, onAssignProfessor }: TurmasTableProps) => {
+const TurmasTable = ({ turmas, isLoading, onEdit, onDelete, onAssignProfessor, onAssignAluno }: TurmasTableProps) => {
   return (
     <TableWrapper totalItems={turmas.length} isLoading={isLoading}>
       <thead>
@@ -20,6 +21,7 @@ const TurmasTable = ({ turmas, isLoading, onEdit, onDelete, onAssignProfessor }:
           <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Semestre</th>
           <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Ano</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Horário</th>
+
           <th className='px-6 py-4 text-xs text-center font-bold text-text-muted uppercase tracking-wider'>Início/Fim</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
         </tr>
@@ -48,6 +50,7 @@ const TurmasTable = ({ turmas, isLoading, onEdit, onDelete, onAssignProfessor }:
               onEdit={onEdit}
               onDelete={onDelete}
               onAssignProfessor={onAssignProfessor}
+              onAssignAluno={onAssignAluno}
             />
           ))
         )}

@@ -8,30 +8,30 @@ import Button from '../../ui/Button';
 import useUsuarios from '../../hooks/useUsuarios';
 import useTurmas from '../../hooks/useTurmas'
 
-interface AssignProfessorModalProps {
+interface AssignAlunoModalProps {
   isOpen: boolean;
   onClose: () => void;
   turmaCodigo?: string;
   turmaId: number;
 }
 
-const AssignProfessorModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignProfessorModalProps) => {
-  const [selectedProfessorId, setSelectedProfessorId] = useState<number>(0);
+const AssignAlunoModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignAlunoModalProps) => {
+  const [selectedAlunoId, setSelectedAlunoId] = useState<number>(0);
 
-  const { professores, loadingProfessores } = useUsuarios();
-  const { addProfessor, isAddingProfessor } = useTurmas();
+  const { alunos, loadingAlunos } = useUsuarios();
+  const { addAluno, isAddingAluno } = useTurmas();
 
-  const handleAddProfessor = () => {
-    if (!selectedProfessorId || selectedProfessorId === 0) {
-      toast.error('Selecione um professor');
+  const handleAddAluno = () => {
+    if (!selectedAlunoId || selectedAlunoId === 0) {
+      toast.error('Selecione um aluno');
       return;
     }
 
-    addProfessor({ turmaId, professorId: selectedProfessorId },
+    addAluno({ turmaId, alunoId: selectedAlunoId },
       {
         onSuccess: () => {
           onClose();
-          setSelectedProfessorId(0);
+          setSelectedAlunoId(0);
         },
       }
     );
@@ -45,7 +45,7 @@ const AssignProfessorModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignP
         <div className='px-6 py-4 border-b border-border flex justify-between items-center bg-input-bg/50'>
           <div className='flex items-center gap-2 text-text-main'>
             <UserPlus size={18} className='text-brand' />
-            <h2 className='text-lg font-bold'>Vincular Professor</h2>
+            <h2 className='text-lg font-bold'>Matricular Aluno</h2>
           </div>
           <button
             onClick={onClose}
@@ -57,22 +57,22 @@ const AssignProfessorModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignP
         <div className='p-6'>
           <div className='mb-6'>
             <p className='text-sm text-text-muted mb-4'>
-              Selecione o professor responsável pela turma <strong className='text-text-main'>{turmaCodigo}</strong>.
+              Selecione o aluno para matricular na turma <strong className='text-text-main'>{turmaCodigo}</strong>.
             </p>
             <div className="space-y-1.5 w-full">
               <label htmlFor="professor_id" className="block text-sm font-semibold text-text-main">
-                Professor
+                Aluno
               </label>
               <select
-                value={selectedProfessorId}
-                onChange={(e) => setSelectedProfessorId(Number(e.target.value))}
-                disabled={loadingProfessores}
+                value={selectedAlunoId}
+                onChange={(e) => setSelectedAlunoId(Number(e.target.value))}
+                disabled={loadingAlunos}
                 className='w-full px-4 py-2.5 bg-input-bg border rounded-lg focus:ring-2 outline-none transition-all text-sm text-text-main cursor-pointer'
               >
-                <option value={0}>Selecione um professor...</option>
-                {professores?.map((professor) => (
-                  <option key={professor.id} value={professor.id}>
-                    {professor.nome}
+                <option value={0}>Selecione um aluno...</option>
+                {alunos?.map((aluno) => (
+                  <option key={aluno.id} value={aluno.id}>
+                    {aluno.nome} - {aluno.matricula}
                   </option>
                 ))}
               </select>
@@ -85,10 +85,10 @@ const AssignProfessorModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignP
             >
               Cancelar
             </button>
-            <Button onClick={handleAddProfessor} 
-              disabled={!selectedProfessorId || selectedProfessorId === 0 || isAddingProfessor} 
+            <Button onClick={handleAddAluno} 
+              disabled={!selectedAlunoId || selectedAlunoId === 0 || isAddingAluno} 
               className='px-5 py-2 w-auto shadow-lg hover:brightness-110'>
-              {isAddingProfessor ? 'Salvando...' : 'Vincular'}
+              {isAddingAluno ? 'Salvando...' : 'Maticular'}
             </Button>
           </div>
         </div>
@@ -97,4 +97,4 @@ const AssignProfessorModal = ({ isOpen, onClose, turmaCodigo, turmaId }: AssignP
   );
 }
 
-export default AssignProfessorModal;
+export default AssignAlunoModal;

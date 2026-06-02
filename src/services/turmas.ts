@@ -34,7 +34,11 @@ const turmaService = {
 
   addProfessor: async (turmaId: number, professorId: number): Promise<void> => {
     await api.post(`/api/v1/turmas/${turmaId}/professores/${professorId}`)
-  }
+  },
+
+  addAluno: async (turmaId: number, alunoId: number): Promise<void> => {
+    await api.post(`/api/v1/turmas/${turmaId}/alunos/${alunoId}`)
+  },
 
 };
 

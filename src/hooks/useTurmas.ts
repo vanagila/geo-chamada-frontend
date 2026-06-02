@@ -61,6 +61,19 @@ const useTurmas = () => {
     },
   });
 
+  const { mutate: addAluno, isPending: isAddingAluno } = useMutation({
+    mutationFn: ({ turmaId, alunoId }: { turmaId: number; alunoId: number }) =>
+      turmaService.addAluno(turmaId, alunoId),
+    onSuccess: () => {
+      toast.success('Aluno adicionado com sucesso');
+      queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['alunos'] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.detail || 'Erro ao adicionar aluno à turma');
+    },
+  });
+
   return {
     turmas,
     isLoading,
@@ -73,7 +86,9 @@ const useTurmas = () => {
     deleteTurma,
     isDeleting,
     addProfessor,
-    isAddingProfessor
+    isAddingProfessor,
+    addAluno,
+    isAddingAluno
   };
 };
 
