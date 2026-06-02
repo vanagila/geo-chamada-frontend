@@ -48,3 +48,9 @@ export const turmaFiltersSchema = z.object({
   ano: z.number().optional(),
   disciplina_id: z.number().optional(),
 });
+
+const assignProfessorSchema = z.object({
+  professor_id: z.number().min(1, 'Por favor, selecione um professor')
+});
+
+export type AssignProfessorFormData = z.infer<typeof assignProfessorSchema>;

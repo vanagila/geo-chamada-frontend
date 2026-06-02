@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { Code, Info, Edit, Trash2, Album } from 'lucide-react';
-import type { Turma } from '../types/tumas.types'
+import { Edit, Trash2, Album, UserPlus, Users } from 'lucide-react';
+import type { Turma } from '../types/tumas.types';
 
 interface TurmaRowProps {
   turma: Turma;
   onEdit: (turma: Turma) => void;
   onDelete: (id: number) => void;
   isDeleting?: boolean;
+  onAssignProfessor: (turma: Turma) => void;
+  onAssignAluno: (turma: Turma) => void;
 }
 
-const TurmaRow = ({ turma, onEdit, onDelete, isDeleting }: TurmaRowProps) => {
+const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAssignAluno }: TurmaRowProps) => {
+
   const getIconColor = (codigo: string) => {
     const colors = [
       { bg: 'bg-brand/10', text: 'text-brand' },
@@ -57,6 +60,20 @@ const TurmaRow = ({ turma, onEdit, onDelete, isDeleting }: TurmaRowProps) => {
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{formatarData(turma.data_inicio)} {formatarData(turma.data_fim)}</td>
       <td className='px-6 py-4 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>
+          <button
+            onClick={() => onAssignProfessor(turma)}
+            className='p-2 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
+            title='Vincular / Alterar Professor'
+          >
+            <UserPlus size={18} />
+          </button>
+          <button
+            onClick={() => onAssignAluno(turma)}
+            className='p-2 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
+            title='Matricular Aluno'
+          >
+            <Users size={18} />
+          </button>
           <button
             onClick={() => onEdit(turma)}
             className='p-2 hover:bg-brand/10 text-brand rounded-lg transition-colors cursor-pointer' title='Editar'>
