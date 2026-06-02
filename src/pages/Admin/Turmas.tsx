@@ -7,12 +7,14 @@ import Button from '../../ui/Button'
 import TurmasTable from '../../components/Turmas/TurmasTable'
 import CreateTurmaModal from '../../components/Turmas/CreateTurmaModal'
 import ConfirmDeleteModal from '../../components/ConfirmDeleteModal.tsx'
+import AssignProfessorModal from '../../components/Professor/AssignProfessorModal'
 import type { Turma, TurmaFormData } from '../../types/turmas.types'
 
 const Turmas = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTurma, setEditingTurma] = useState<Disciplina | null>(null);
   const [turmaToDelete, setTurmaToDelete] = useState<Turma | null>(null);
+  const [turmaParaVincular, setTurmaParaVincular] = useState<Turma | null>(null);
 
   const {
     turmas,
@@ -86,6 +88,7 @@ const Turmas = () => {
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDeleteClick}
+            onAssignProfessor={(turma) => setTurmaParaVincular(turma)}
           />
         </main>
       </div>
@@ -108,6 +111,18 @@ const Turmas = () => {
         itemName={turmaToDelete?.codigo}
         isDeleting={isDeleting}
       />
+
+      {turmaParaVincular && (
+        <AssignProfessorModal 
+          isOpen={true}
+          onClose={() => setTurmaParaVincular(null)}
+          turmaId={turmaParaVincular.id}
+          turmaCodigo={turmaParaVincular.codigo}
+          onSuccess={() => {
+            setTurmaParaVincular(null);
+          }}
+        />
+      )}
     </div>
   );
 }

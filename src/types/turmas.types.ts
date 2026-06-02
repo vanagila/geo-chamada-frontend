@@ -57,11 +57,6 @@ export interface TurmaResponse extends Turma {
   alunos_count?: number;
 }
 
-export interface VinculoTurmaRequest {
-  turma_id: number;
-  usuario_id: number;
-}
-
 export interface TurmaFilters {
   semestre?: string;
   ano?: number;

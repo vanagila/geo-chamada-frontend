@@ -7,9 +7,10 @@ interface TurmasTableProps {
   isLoading: boolean;
   onEdit: (turma: Turma) => void;
   onDelete: (turma: Turma) => void;
+  onAssignProfessor: (turma: Turma) => void;
 }
 
-const TurmasTable = ({ turmas, isLoading, onEdit, onDelete }: TurmasTableProps) => {
+const TurmasTable = ({ turmas, isLoading, onEdit, onDelete, onAssignProfessor }: TurmasTableProps) => {
   return (
     <TableWrapper totalItems={turmas.length} isLoading={isLoading}>
       <thead>
@@ -46,6 +47,7 @@ const TurmasTable = ({ turmas, isLoading, onEdit, onDelete }: TurmasTableProps) 
               turma={turma}
               onEdit={onEdit}
               onDelete={onDelete}
+              onAssignProfessor={onAssignProfessor}
             />
           ))
         )}

@@ -32,6 +32,10 @@ const turmaService = {
     await api.delete(`api/v1/turmas/${id}`)
   },
 
+  addProfessor: async (turmaId: number, professorId: number): Promise<void> => {
+    await api.post(`/api/v1/turmas/${turmaId}/professores/${professorId}`)
+  }
+
 };
 
 export default turmaService;
