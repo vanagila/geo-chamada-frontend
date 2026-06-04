@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BookOpen, Plus, Users } from 'lucide-react';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
@@ -6,6 +7,20 @@ import GeofenceCard from '../../components/GeofenceCard';
 import AttendanceHistoryTable from '../../components/AttendanceHistoryTable';
 
 const ProfessorDashboard = () => {
+  const [configuracao, setConfiguracao] = useState({
+    raio: 150,
+    coordenadas: null as { latitude: number; longitude: number } | null,
+    hasLocation: false,
+  })
+
+  const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
+    setConfiguracao({
+      raio: novaConfig.raio,
+      coordenadas: novaConfig.coordenadas,
+      hasLocation: !!novaConfig.coordenadas,
+    });
+  };
+
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
       <Header />
@@ -65,7 +80,15 @@ const ProfessorDashboard = () => {
               <AttendanceHistoryTable />
             </div>
             <div className='lg:col-span-1 space-y-6'>
-              <GeofenceCard />
+              <GeofenceCard 
+                onConfigChange={(novaConfig) => {
+                  setConfiguracao({
+                    raio: novaConfig.raio,
+                    coordenadas: novaConfig.coordenadas,
+                    hasLocation: !!novaConfig.coordenadas
+                  });
+                }}
+              />
               <div className='bg-card-dark text-white p-5 rounded-xl shadow-sm border border-border-dark'>
                 <h4 className='text-text-muted text-xs font-bold uppercase tracking-widest mb-4'>
                   Métricas de Hoje

@@ -1,12 +1,36 @@
-import { useState, useCallback } from "react";
-import type { Coordenadas, UseGeolocationOptions, UseGeolocationReturn } from '../types'
+import { useState, useCallback, useEffect } from "react";
+import toast from 'react-hot-toast';
+import type { Coordenadas, UseGeolocationOptions, UseGeolocationReturn } from '../types';
+
+const LOCALIZACAO_STORAGE_KEY = '@GeoChamada/localizacao';
 
 const useGeolocation = (options: UseGeolocationOptions = {}): UseGeolocationReturn => {
-  const { enableHighAccuracy = true, timeout = 10000, onSuccess, onError } = options;
+  const { 
+    enableHighAccuracy = true, 
+    timeout = 10000, 
+    onSuccess, 
+    onError,
+    persistLocation = true
+  } = options;
 
   const [coordenadas, setCoordenadas] = useState<Coordenadas | null>(null);
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState<sting | null>(null);
+  const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (persistLocation) {
+      const salva = localStorage.getItem(LOCALIZACAO_STORAGE_KEY);
+      if (salva) {
+        try {
+          const coords = JSON.parse(salva);
+          setCoordenadas(coords);
+          console.log('Localização carregada do cache:', coords);
+        } catch (e) {
+          console.log('Erro ao carregar localizacão salva');
+        }
+      }
+    }
+  }, [persistLocation])
 
   const capturarLocalizacao = useCallback(() => {
     if (!navigator.geolocation) {
@@ -14,6 +38,7 @@ const useGeolocation = (options: UseGeolocationOptions = {}): UseGeolocationRetu
       setErro(msg);
       onError?.(msg);
       console.log(msg);
+      toast.error(msg)
       return;
     }
 
@@ -28,6 +53,11 @@ const useGeolocation = (options: UseGeolocationOptions = {}): UseGeolocationRetu
         };
         setCoordenadas(coords);
         setCarregando(false);
+
+        if (persistLocation) {
+          localStorage.setItem(LOCALIZACAO_STORAGE_KEY, JSON.stringify(coords));
+        }
+
         onSuccess?.(coords);
         console.log('Localização capturada com sucesso!');
       },
@@ -51,9 +81,17 @@ const useGeolocation = (options: UseGeolocationOptions = {}): UseGeolocationRetu
       },
       { enableHighAccuracy, timeout }
     );
-  }, [enableHighAccuracy, timeout, onSuccess, onError]);
+  }, [enableHighAccuracy, timeout, onSuccess, onError, persistLocation]);
 
-  return { coordenadas, carregando, erro, capturarLocalizacao };
+  const hasLocation = coordenadas !== null;
+
+  return { 
+    coordenadas, 
+    carregando, 
+    erro, 
+    capturarLocalizacao,
+    hasLocation
+  };
 };
 
 export default useGeolocation;
