@@ -74,6 +74,12 @@ const useTurmas = () => {
     },
   });
 
+  const { data: turmasProfessor = [], isLoading: isLoadingTurmas, error: errorTurma, refetch: refetchTurma } = useQuery({
+    queryKey: TURMAS_QUERY_KEY,
+    queryFn: () => turmaService.getByProfessor(),
+    staleTime: 1000 * 60 * 5
+  });
+
   return {
     turmas,
     isLoading,
@@ -88,7 +94,11 @@ const useTurmas = () => {
     addProfessor,
     isAddingProfessor,
     addAluno,
-    isAddingAluno
+    isAddingAluno,
+    turmasProfessor,
+    isLoadingTurmas,
+    errorTurma,
+    refetchTurma
   };
 };
 

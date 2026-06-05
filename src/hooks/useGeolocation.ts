@@ -23,7 +23,6 @@ const useGeolocation = (options: UseGeolocationOptions = {}): UseGeolocationRetu
       if (salva) {
         try {
           const coords = JSON.parse(salva);
-          setCoordenadas(coords);
           console.log('Localização carregada do cache:', coords);
         } catch (e) {
           console.log('Erro ao carregar localizacão salva');

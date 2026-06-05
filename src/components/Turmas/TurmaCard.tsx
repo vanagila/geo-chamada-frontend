@@ -1,16 +1,59 @@
 import { Clock, Radio } from 'lucide-react';
-import Button from '../ui/Button'
+import toast from 'react-hot-toast';
+import Button from '../../ui/Button';
+import useChamadas from '../../hooks/useChamadas';
+import type { Coordenadas } from '../../types/geo.types';
 
-interface ClassCardProps {
+interface TurmaCardProps {
+  id: number;
   nome: string;
   horario: string;
   sala: string;
   totalAlunos: number;
   status: 'pronta' | 'aguardando';
+  configuracao: {
+    raio: number;
+    coordenadas: { latitude: number; longitude: number } | null;
+    hasLocation: boolean;
+  };
+  onSuccess?: () => void
 }
 
-const ClassCard = ({ nome, horario, sala, totalAlunos, status }: ClassCardProps) => {
+const TurmaCard = ({ id, nome, horario, sala, totalAlunos, status, configuracao, onSuccess }: TurmaCardProps) => {
   const isReady = status === 'pronta';
+
+  const { createChamada, isCreating } = useChamadas();
+
+  console.log(configuracao)
+
+  const handleAbrirChamada = () => {
+    if (!configuracao.hasLocation || !configuracao.coordenadas) {
+      toast.error('Configure a sua localização no painel ao lado');
+      return
+    }
+
+    createChamada(
+      {
+        turma_id: id,
+        raio: configuracao.raio,
+        coordenadas: {
+          latitude: configuracao.coordenadas.latitude,
+          longitude: configuracao.coordenadas.longitude,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(`Chamada aberta para ${turma}!`);
+          onSuccess?.();
+        },
+        onError: (error: any) => {
+          console.error('Erro completo:', error);
+          console.error('Response:', error.response);
+          console.error('Data:', error.response?.data);
+        }
+      }
+    );
+  };
 
   return (
     <div className={`bg-card p-5 rounded-xl border border-bordershadow-sm transition-all ${!isReady ? 'opacity-80' : 'hover:shadow-md'}`}>
@@ -37,8 +80,12 @@ const ClassCard = ({ nome, horario, sala, totalAlunos, status }: ClassCardProps)
       </div>
 
       {isReady ? (
-        <Button icon={<Radio size={18}/>} className='py-2.5'>
-          Abrir Chamada
+        <Button 
+          onClick={handleAbrirChamada}
+          disabled={isCreating || !configuracao.hasLocation}
+          icon={<Radio size={18}/>} 
+          className='py-2.5'>
+          {isCreating ? 'Abrindo...' : 'Abrir Chamada'}
         </Button>
       ) : (
         <Button disabled className='py-2.5 bg-input-bg text-text-muted border-none shadow-none'>
@@ -49,4 +96,4 @@ const ClassCard = ({ nome, horario, sala, totalAlunos, status }: ClassCardProps)
   );
 }
 
-export default ClassCard;
+export default TurmaCard;

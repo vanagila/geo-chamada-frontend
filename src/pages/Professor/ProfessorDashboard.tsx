@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { BookOpen, Plus, Users } from 'lucide-react';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
-import ClassCard from '../../components/ClassCard';
+import TurmaCard from '../../components/Turmas/TurmaCard';
 import GeofenceCard from '../../components/GeofenceCard';
 import AttendanceHistoryTable from '../../components/AttendanceHistoryTable';
+import useAuth from '../../hooks/useAuth';
+import useTurmas from '../../hooks/useTurmas';
+import type { Turma } from '../../types/turmas.types';
 
 const ProfessorDashboard = () => {
   const [configuracao, setConfiguracao] = useState({
@@ -13,6 +16,15 @@ const ProfessorDashboard = () => {
     hasLocation: false,
   })
 
+  const { user } = useAuth();
+
+  const { 
+    turmasProfessor, 
+    isLoadingTurmas, 
+    errorTurma, 
+    refetchTurma 
+  } = useTurmas();
+
   const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
     setConfiguracao({
       raio: novaConfig.raio,
@@ -20,6 +32,10 @@ const ProfessorDashboard = () => {
       hasLocation: !!novaConfig.coordenadas,
     });
   };
+
+  const handleSuccess = () => {
+    refetchTurma();
+  }
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -30,7 +46,7 @@ const ProfessorDashboard = () => {
           <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
             <div>
               <h2 className='text-2xl font-bold text-text-main tracking-tight'>
-                Bem-vindo, Prof. Silva
+                Bem-vindo, {user?.nome?.split(' ')[0]}!
               </h2>
               <p className='text-text-muted text-sm mt-1'>
                 Gerencie as suas frequências e turmas em tempo real.
@@ -61,20 +77,37 @@ const ProfessorDashboard = () => {
                   </button>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <ClassCard 
-                    nome='Eng. de Software - 4A' 
-                    horario='08:00 - 10:00' 
-                    sala='Sala 204' 
-                    totalAlunos={40} 
-                    status='pronta' 
-                  />
-                  <ClassCard 
-                    nome='Arquitetura de Dados - 6B' 
-                    horario='10:15 - 12:15' 
-                    sala='Lab 05' 
-                    totalAlunos={28} 
-                    status='aguardando' 
-                  />
+                  {isLoadingTurmas ? (
+                    <div className='col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16 bg-card border border-border rounded-xl shadow-sm'>
+                      <div className='animate-spin rounded-full h-10 w-10 border-b-2 border-brand mb-4'></div>
+                      <p className='text-text-main font-bold'>Buscando suas turmas...</p>
+                      <p className='text-sm text-text-muted mt-1'>Por favor, aguarde um momento.</p>
+                    </div>
+                  ) : turmasProfessor?.length === 0 ? (
+                    <div className='col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16 bg-card border border-border rounded-xl shadow-sm text-center px-4'>
+                      <div className='w-16 h-16 bg-input-bg rounded-full flex items-center justify-center mb-4 text-text-muted'>
+                        <BookOpen size={32} />
+                      </div>
+                      <p className='text-text-main font-bold text-lg'>Nenhuma turma para hoje</p>
+                      <p className='text-sm text-text-muted mt-1 max-w-sm'>
+                        Você não possui turmas alocadas ou aulas agendadas para o dia de hoje.
+                      </p>
+                    </div>
+                  ) : (
+                    turmasProfessor?.map((turma: Turma) => (
+                      <TurmaCard
+                        key={turma.id}
+                        id={turma.id}
+                        nome={turma.disciplina_nome || 'Disciplina'}
+                        horario={turma.horario?.substring(0, 5) || '--:--'}
+                        sala={turma.sala || '204'}
+                        totalAlunos={40}
+                        status="pronta"
+                        configuracao={configuracao}
+                        onSuccess={handleSuccess}
+                      />
+                    ))
+                  )}
                 </div>
               </section>
               <AttendanceHistoryTable />

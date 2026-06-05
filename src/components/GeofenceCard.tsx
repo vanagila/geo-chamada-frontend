@@ -35,7 +35,6 @@ const GeofenceCard = ({ onConfigChange }: GeofenceCardProps) => {
         onConfigChange({ raio, coordenadas });
       }
     }
-    console.log(coordenadas, raio)
   }, [coordenadas, raio]);
 
   const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {

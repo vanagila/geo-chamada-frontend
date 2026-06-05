@@ -17,6 +17,11 @@ const turmaService = {
     return response.data
   },
 
+  getByProfessor: async (professorId: string): Promise<TurmaResponse> => {
+    const response = await api.get(`/api/v1/turmas/professor/${professorId}`);
+    return response.data
+  },
+
   create: async (data: TurmaCreate): Promise<Turma> => {
     const response = await api.post('/api/v1/turmas/', data);
     return response.data
