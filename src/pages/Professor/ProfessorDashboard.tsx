@@ -4,7 +4,7 @@ import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
 import TurmaCard from '../../components/Turmas/TurmaCard';
 import GeofenceCard from '../../components/GeofenceCard';
-import AttendanceHistoryTable from '../../components/AttendanceHistoryTable';
+import HistoricoChamadaTable from '../../components/HistoricoChamadaTable';
 import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
 import useChamadas from '../../hooks/useChamadas'
@@ -26,7 +26,13 @@ const ProfessorDashboard = () => {
     refetchTurma 
   } = useTurmas();
 
-  const { chamadasAtivasPorTurma, loadingAtivas, refetchAtivas } = useChamadas(user?.id);
+  const { 
+    chamadasAtivasPorTurma, 
+    loadingAtivas, 
+    refetchAtivas,
+    allChamadasProfessor: chamadasOrdenadas,
+    loadingAllChamadasProfessor
+  } = useChamadas(user?.id);
 
   const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
     setConfiguracao({
@@ -114,7 +120,11 @@ const ProfessorDashboard = () => {
                   )}
                 </div>
               </section>
-              <AttendanceHistoryTable />
+              <HistoricoChamadaTable 
+                chamadas={chamadasOrdenadas}
+                turmas={turmasProfessor}
+                isLoading={loadingAllChamadasProfessor}
+              />
             </div>
             <div className='lg:col-span-1 space-y-6'>
               <GeofenceCard 

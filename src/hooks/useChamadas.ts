@@ -1,12 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import chamadaService from '../services/chamadas';
-import type { AbrirChamadaData } from '../types/chamadas.types'
+import type { AbrirChamadaData } from '../types/chamadas.types';
 
 const CHAMADAS_QUERY_KEY = ['chamadas']
 
 const useChamadas = (professorId?: number) => {
   const queryClient = useQueryClient();
+
+  const { data: allChamadasProfessor = [], isLoading: loadingAllChamadasProfessor, refetch: refetchAllChamadasProfessor } = useQuery({
+    queryKey: [...CHAMADAS_QUERY_KEY, 'all-chamadas-professor', professorId],
+    queryFn: () => chamadaService.listByProfessor(professorId!), 
+    enabled: !!professorId,
+  });
+
+  const chamadasOrdenadas = useMemo(() => {
+    return [...allChamadasProfessor].sort((a, b) => 
+      new Date(b.data_abertura).getTime() - new Date(a.data_abertura).getTime()
+    );
+  }, [allChamadasProfessor]);
 
   const { data: chamadasAtivas = [], isLoading: loadingAtivas, refetch: refetchAtivas } = useQuery({
     queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', professorId],
@@ -50,7 +63,10 @@ const useChamadas = (professorId?: number) => {
     chamadasAtivas,
     loadingAtivas,
     refetchAtivas,
-    chamadasAtivasPorTurma
+    chamadasAtivasPorTurma,
+    allChamadasProfessor: chamadasOrdenadas,
+    loadingAllChamadasProfessor,
+    refetchAllChamadasProfessor
   };
 };
 
