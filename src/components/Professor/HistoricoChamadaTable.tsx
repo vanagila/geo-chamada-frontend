@@ -1,8 +1,8 @@
 import { History } from 'lucide-react';
-import Badge from '../ui/Badge';
-import ProgressBar from '../ui/ProgressBar';
-import type { Chamada } from '../types/chamadas.types.ts';
-import type { Turma } from '../types/turmas.types';
+import Badge from '../../ui/Badge';
+import ProgressBar from '../../ui/ProgressBar';
+import type { Chamada } from '../../types/chamadas.types.ts';
+import type { Turma } from '../../types/turmas.types';
 
 interface HistoricoChamadaTableProps {
   chamadas: Chamada[];

@@ -4,7 +4,7 @@ import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
 import TurmaCard from '../../components/Turmas/TurmaCard';
 import GeofenceCard from '../../components/GeofenceCard';
-import HistoricoChamadaTable from '../../components/HistoricoChamadaTable';
+import HistoricoChamadaTable from '../../components/Professor/HistoricoChamadaTable';
 import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
 import useChamadas from '../../hooks/useChamadas'
