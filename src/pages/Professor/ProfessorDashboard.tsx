@@ -7,6 +7,7 @@ import GeofenceCard from '../../components/GeofenceCard';
 import AttendanceHistoryTable from '../../components/AttendanceHistoryTable';
 import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
+import useChamadas from '../../hooks/useChamadas'
 import type { Turma } from '../../types/turmas.types';
 
 const ProfessorDashboard = () => {
@@ -24,6 +25,8 @@ const ProfessorDashboard = () => {
     errorTurma, 
     refetchTurma 
   } = useTurmas();
+
+  const { chamadasAtivasPorTurma, loadingAtivas, refetchAtivas } = useChamadas(user?.id);
 
   const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
     setConfiguracao({
@@ -104,6 +107,7 @@ const ProfessorDashboard = () => {
                         totalAlunos={40}
                         status="pronta"
                         configuracao={configuracao}
+                        chamadaAtiva={chamadasAtivasPorTurma[turma.id]}
                         onSuccess={handleSuccess}
                       />
                     ))

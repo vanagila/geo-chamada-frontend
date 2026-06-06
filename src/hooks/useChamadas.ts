@@ -5,8 +5,20 @@ import type { AbrirChamadaData } from '../types/chamadas.types'
 
 const CHAMADAS_QUERY_KEY = ['chamadas']
 
-const useChamadas = () => {
+const useChamadas = (professorId?: number) => {
   const queryClient = useQueryClient();
+
+  const { data: chamadasAtivas = [], isLoading: loadingAtivas, refetch: refetchAtivas } = useQuery({
+    queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', professorId],
+    queryFn: () => chamadaService.listAtivasByProfessor(professorId!), 
+    enabled: !!professorId,
+    refetchInterval: 30000 
+  });
+
+  const chamadasAtivasPorTurma = chamadasAtivas.reduce((acc, chamada) => {
+    acc[chamada.turma_id] = chamada;
+    return acc;
+  }, {} as Record<number, Chamada>);
 
   const { mutate: createChamada, isPending: isCreating } = useMutation({
     mutationFn: (data: AbrirChamadaData) => chamadaService.create(data),
@@ -19,9 +31,26 @@ const useChamadas = () => {
     },
   });
 
+  const { mutate: encerrarChamada, isPending: isEncerrando } = useMutation({
+    mutationFn: (chamadaId: number) => chamadaService.encerrar(chamadaId),
+    onSuccess: () => {
+      toast.success('Chamada encerrada com sucesso!');
+      queryClient.invalidateQueries({ queryKey: CHAMADAS_QUERY_KEY });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.detail || 'Erro ao encerrar chamada');
+    },
+  });
+
   return {
     createChamada,
-    isCreating
+    isCreating,
+    encerrarChamada,
+    isEncerrando,
+    chamadasAtivas,
+    loadingAtivas,
+    refetchAtivas,
+    chamadasAtivasPorTurma
   };
 };
 
