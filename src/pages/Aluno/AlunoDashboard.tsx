@@ -1,4 +1,6 @@
 import useAuth from '../../hooks/useAuth';
+import useTurmas from '../../hooks/useTurmas';
+import useChamadas from '../../hooks/useChamadas';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
 import ChamadaAtiva from '../../components/Aluno/ChamadaAtiva';
@@ -8,6 +10,26 @@ import StudentHistoryList from '../../components/StudentHistoryList.tsx';
 
 const AlunoDashboard = () => {
   const { user } = useAuth();
+
+  const { 
+    turmasAluno, 
+    isLoadingTurmasAluno, 
+    errorTurmaAluno, 
+    refetchTurmaAluno 
+  } = useTurmas();
+
+  const {
+    chamadaAtivaAluno,
+    loadingAtivaAluno,
+    refetchAtivaAluno
+  } = useChamadas();
+
+  console.log(turmasAluno)
+  console.log(chamadaAtivaAluno)
+
+  const turmaComChamadaAtiva = chamadaAtivaAluno 
+    ? turmasAluno?.find(t => t.id === chamadaAtivaAluno.turma_id)
+    : null;
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -24,7 +46,21 @@ const AlunoDashboard = () => {
             </p>
           </div>
 
-          <ChamadaAtiva />
+          {loadingAtivaAluno ? (
+            <div className='w-full h-40 bg-card rounded-2xl border border-border flex items-center justify-center shadow-sm'>
+               <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-brand'></div>
+            </div>
+          ) : chamadaAtivaAluno && turmaComChamadaAtiva ? (
+            <ChamadaAtiva 
+              turma={turmaComChamadaAtiva}
+              chamadaAtiva={chamadaAtivaAluno}
+              onMarcarPresenca={() => console.log('Integração de presença pendente')} 
+            />
+          ) : (
+            <div className='w-full p-8 bg-card rounded-2xl border border-border text-center shadow-sm'>
+              <p className='text-text-muted font-medium'>Nenhuma chamada ativa no momento.</p>
+            </div>
+          )}
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
             <DistanceRadar distance={12} maxRadius={50} />

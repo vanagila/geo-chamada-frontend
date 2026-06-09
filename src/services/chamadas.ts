@@ -12,6 +12,11 @@ const chamadaService = {
     return response.data
   },
 
+  getAtivaByAluno: async (): Promise<Chamada> => {
+    const response = await api.get(`/api/v1/chamadas/aluno/ativa`);
+    return response.data
+  },
+
   relatorioChamada: async (id: number): Promise<RelatorioChamada> => {
     const response = await api.get(`/api/v1/chamadas/${id}/relatorio`);
     return response.data
