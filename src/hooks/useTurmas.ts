@@ -10,7 +10,8 @@ const useTurmas = () => {
   const queryClient = useQueryClient();
 
   const { user, loading: authLoading } = useAuth();
-  const professorId = user?.id;
+  const userId = user?.id;
+  const userTipo = user?.tipo;
 
   const { data: turmas = [], isLoading, error, refetch } = useQuery({
     queryKey: TURMAS_QUERY_KEY,
@@ -24,6 +25,8 @@ const useTurmas = () => {
     onSuccess: () => {
       toast.success('Turma criada com sucesso');
       queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'professor'] });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'aluno'] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || 'Erro ao criar turma');
@@ -36,6 +39,8 @@ const useTurmas = () => {
     onSuccess: () => {
       toast.success('Turma atualizada com sucesso');
       queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'professor'] });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'aluno'] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data.detail || 'Erro ao atualizar turma');
@@ -47,6 +52,8 @@ const useTurmas = () => {
     onSuccess: () => {
       toast.success('Turma deletada com sucesso');
       queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'professor'] });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'aluno'] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data.detail || 'Erro ao deletar turma');
@@ -60,6 +67,7 @@ const useTurmas = () => {
       toast.success('Professor adicionado com sucesso');
       queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: ['professores'] });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'professor'] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || 'Erro ao adicionar professor à turma');
@@ -73,6 +81,7 @@ const useTurmas = () => {
       toast.success('Aluno adicionado com sucesso');
       queryClient.invalidateQueries({ queryKey: TURMAS_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: ['alunos'] });
+      queryClient.invalidateQueries({ queryKey: [TURMAS_QUERY_KEY, 'aluno'] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || 'Erro ao adicionar aluno à turma');
@@ -80,16 +89,30 @@ const useTurmas = () => {
   });
 
   const { data: turmasProfessor = [], isLoading: isLoadingTurmas, error: errorTurma, refetch: refetchTurma } = useQuery({
-    queryKey: [TURMAS_QUERY_KEY, professorId],
+    queryKey: [TURMAS_QUERY_KEY, 'professor', userId],
     queryFn: async () => {
-      if (!professorId) {
-        console.warn('⚠️ professorId não disponível ainda');
+      if (!userId) {
+        console.warn('userId não disponível ainda');
         return [];
       }
-      const result = await turmaService.getByProfessor(professorId);
+      const result = await turmaService.getByProfessor(userId);
       return result;
     },
-    enabled: !!professorId && !authLoading,
+    enabled: userTipo === 'PROFESSOR' && !!userId && !authLoading,
+    staleTime: 1000 * 60 * 5
+  });
+
+  const { data: turmasAluno = [], isLoading: isLoadingTurmasAluno, error: errorTurmaAluno, refetch: refetchTurmaAluno } = useQuery({
+    queryKey: [TURMAS_QUERY_KEY, 'aluno', userId],
+    queryFn: async () => {
+      if (!userId) {
+        console.warn('userId não disponível ainda');
+        return [];
+      }
+      const result = await turmaService.getByAluno(userId);
+      return result;
+    },
+    enabled: userTipo === 'ALUNO' && !!userId && !authLoading,
     staleTime: 1000 * 60 * 5
   });
 
@@ -111,7 +134,11 @@ const useTurmas = () => {
     turmasProfessor,
     isLoadingTurmas: isLoadingTurmas || authLoading,
     errorTurma,
-    refetchTurma
+    refetchTurma,
+    turmasAluno,
+    isLoadingTurmasAluno: isLoadingTurmasAluno || authLoading,
+    errorTurmaAluno,
+    refetchTurmaAluno
   };
 };
 

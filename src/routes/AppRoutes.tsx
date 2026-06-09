@@ -14,7 +14,7 @@ import TurmasProfessor from '../pages/Professor/TurmasProfessor';
 import Chamadas from '../pages/Professor/Chamadas';
 import RelatorioChamada from '../pages/Professor/RelatorioChamada';
 // Aluno
-import StudentDashboard from '../pages/Student/StudentDashboard';
+import AlunoDashboard from '../pages/Aluno/AlunoDashboard';
 
 const AppRoutes = () => {
   const { user, loading } = useAuth();
@@ -101,7 +101,7 @@ const AppRoutes = () => {
       <Route path='/aluno/dashboard'
         element={
           <ProtectedRoute allowedRoles={['ALUNO']}>
-            <StudentDashboard/>
+            <AlunoDashboard/>
           </ProtectedRoute>
         }
       />

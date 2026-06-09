@@ -1,9 +1,28 @@
+import { useState, useEffect, useRef } from 'react';
+import { LocateFixed, Info, Signal, CheckCircle2 } from 'lucide-react';
+import Button from '../ui/Button';
+import useGeolocation from '../hooks/useGeolocation';
+import useChamadas from '../hooks/useChamadas';
+import type { Turma } from '../types/turmas.types';
+import type { Coordenadas } from '../types/geo.types';
+
 interface DistanceRadarProps {
   distance: number;
   maxRadius?: number;
 }
 
 const DistanceRadar = ({ distance, maxRadius = 50 }: DistanceRadarProps) => {
+
+  const { 
+    coordenadas,
+    carregando,
+    erro,
+    capturarLocalizacao,
+    hasLocation
+  } = useGeolocation({
+    persistLocation: true
+  });
+
   const percentage = Math.min((distance / maxRadius) * 100, 100);
   const isInRange = distance <= maxRadius;
   
@@ -38,6 +57,15 @@ const DistanceRadar = ({ distance, maxRadius = 50 }: DistanceRadarProps) => {
       <p className='text-sm text-text-muted'>
         Está a {distance} metros do ponto central da sala.
       </p>
+
+      <Button 
+        onClick={capturarLocalizacao} 
+        disabled={carregando} 
+        icon={<Signal size={20} />} 
+        className={`py-3 w-full ${hasLocation ? 'bg-input-bg !text-text-main hover:bg-border border border-border shadow-none' : ''}`}
+      >
+        {carregando ? 'Capturando...' : hasLocation ? 'Atualizar Localização' : 'Ativar Localização'}
+      </Button>
     </div>
   );
 }

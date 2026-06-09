@@ -1,12 +1,12 @@
 import useAuth from '../../hooks/useAuth';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
-import ActiveAttendanceBanner from '../../components/ActiveAttendanceBanner';
+import ChamadaAtiva from '../../components/Aluno/ChamadaAtiva';
 import DistanceRadar from '../../components/DistanceRadar';
 import MapPreview from '../../components/MapPreview'
 import StudentHistoryList from '../../components/StudentHistoryList.tsx';
 
-const StudentDashboard = () => {
+const AlunoDashboard = () => {
   const { user } = useAuth();
 
   return (
@@ -24,7 +24,7 @@ const StudentDashboard = () => {
             </p>
           </div>
 
-          <ActiveAttendanceBanner />
+          <ChamadaAtiva />
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
             <DistanceRadar distance={12} maxRadius={50} />
@@ -38,4 +38,4 @@ const StudentDashboard = () => {
   );
 }
 
-export default StudentDashboard;
+export default AlunoDashboard;
