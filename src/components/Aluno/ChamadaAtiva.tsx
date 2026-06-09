@@ -1,4 +1,4 @@
-import { Fingerprint, LocateFixed } from 'lucide-react';
+import { Fingerprint, LocateFixed, Loader2 } from 'lucide-react';
 import type { Turma } from '../../types/turmas.types';
 import type { Chamada } from '../../types/chamadas.types';
 
@@ -6,16 +6,15 @@ interface ChamadaAtivaProps {
   turma: Turma;
   chamadaAtiva: Chamada;
   onMarcarPresenca?: () => void;
+  isCreating?: boolean
 }
 
-const ChamadaAtiva = ({ turma, chamadaAtiva, onMarcarPresenca }: ChamadaAtivaProps) => {
+const ChamadaAtiva = ({ turma, chamadaAtiva, onMarcarPresenca, isCreating }: ChamadaAtivaProps) => {
   const nomeProfessor = turma.professores && turma.professores.length > 0 
     ? turma.professores[0].nome 
     : 'Professor não alocado';
 
   const horarioFormatado = turma.horario ? turma.horario.substring(0, 5) : '--:--';
-
-  console.log(chamadaAtiva)
 
   return (
     <section className='relative overflow-hidden rounded-2xl bg-card p-6 shadow-xl border border-brand/10 group'>
@@ -62,9 +61,15 @@ const ChamadaAtiva = ({ turma, chamadaAtiva, onMarcarPresenca }: ChamadaAtivaPro
         <div className='w-full md:w-auto'>
           <button 
             onClick={onMarcarPresenca}
-            className='w-full md:w-56 h-20 bg-success hover:bg-success/90 text-white rounded-xl font-black text-lg shadow-lg shadow-success/30 transiton-all flex flex-col items-center justify-center gap-1 group cursor-pointer border-none'>
-            <Fingerprint size={32} />
-              MARCAR PRESENÇA
+            disabled={isCreating}
+            className='w-full md:w-56 h-20 bg-success hover:bg-success/90 text-white rounded-xl font-black text-lg shadow-lg shadow-success/30 transiton-all flex flex-col items-center justify-center gap-1 group cursor-pointer border-none'
+          >
+            {isCreating ? (
+              <Loader2 className="animate-spin" size={32} />
+            ) : (
+              <Fingerprint size={32} />
+            )}
+            {isCreating ? 'REGISTRANDO...' : 'MARCAR PRESENÇA'}
           </button>
         </div>
       </div>

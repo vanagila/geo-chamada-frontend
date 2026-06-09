@@ -1,5 +1,5 @@
-import type { Coordenadas } from './geo.types.ts';
-import type { DisciplinaResumo } from './discipline.types.ts';
+import type { Coordenadas } from './geo.types';
+import type { DisciplinaResumo } from './discipline.types';
 
 export enum PresencaStatus {
   PRESENTE = "PRESENTE",

@@ -1,4 +1,4 @@
-import api from './api.ts';
+import api from './api';
 import type { Chamada, AbrirChamadaData, RelatorioChamada } from '../types/chamadas.types';
 
 const chamadaService = {

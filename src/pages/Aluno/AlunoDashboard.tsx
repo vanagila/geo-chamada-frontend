@@ -1,6 +1,10 @@
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
 import useChamadas from '../../hooks/useChamadas';
+import usePresencas from '../../hooks/usePresencas';
+import useGeolocation from '../../hooks/useGeolocation';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
 import ChamadaAtiva from '../../components/Aluno/ChamadaAtiva';
@@ -10,6 +14,7 @@ import StudentHistoryList from '../../components/StudentHistoryList.tsx';
 
 const AlunoDashboard = () => {
   const { user } = useAuth();
+  const [distance, setDistance] = useState<number>(0);
 
   const { 
     turmasAluno, 
@@ -24,12 +29,41 @@ const AlunoDashboard = () => {
     refetchAtivaAluno
   } = useChamadas();
 
-  console.log(turmasAluno)
-  console.log(chamadaAtivaAluno)
+  const { createPresenca, isCreating } = usePresencas();
+  const { 
+    coordenadas, 
+    hasLocation, 
+    capturarLocalizacao 
+  } = useGeolocation({ persistLocation: true });
 
   const turmaComChamadaAtiva = chamadaAtivaAluno 
     ? turmasAluno?.find(t => t.id === chamadaAtivaAluno.turma_id)
     : null;
+
+  const handleMarcarPresenca = () => {
+    if (!hasLocation || !coordenadas) {
+      toast.error('Ative sua localização primeiro');
+      capturarLocalizacao();
+      return;
+    }
+
+    if (!chamadaAtivaAluno) {
+      toast.error('Nenhuma chamada ativa no momento');
+      return;
+    }
+
+    createPresenca({
+      chamada_id: chamadaAtivaAluno.id,
+      coordenadas: {
+        latitude: coordenadas.latitude,
+        longitude: coordenadas.longitude,
+      },
+    }, {
+      onSuccess: () => {
+        refetchAtivaAluno();
+      },
+    });
+  };
 
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-app-bg font-sans'>
@@ -54,7 +88,8 @@ const AlunoDashboard = () => {
             <ChamadaAtiva 
               turma={turmaComChamadaAtiva}
               chamadaAtiva={chamadaAtivaAluno}
-              onMarcarPresenca={() => console.log('Integração de presença pendente')} 
+              onMarcarPresenca={handleMarcarPresenca}
+              isCreating={isCreating}
             />
           ) : (
             <div className='w-full p-8 bg-card rounded-2xl border border-border text-center shadow-sm'>
