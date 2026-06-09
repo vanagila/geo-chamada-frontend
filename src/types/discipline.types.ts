@@ -23,6 +23,12 @@ export interface DisciplinaUpdate {
   carga_horaria?: number;
 }
 
+export interface DisciplinaResumo {
+  id: number;
+  nome: string;
+  codigo: string;
+}
+
 export interface DisciplinaResponse {
   id: number;
   nome: string;
