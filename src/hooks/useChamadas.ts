@@ -9,13 +9,15 @@ const CHAMADAS_QUERY_KEY = ['chamadas']
 
 const useChamadas = () => {
   const queryClient = useQueryClient();
+  
   const { user } = useAuth();
-  const professorId = user?.id;
+  const userId = user?.id;
+  const userTipo = user?.tipo;
 
   const { data: allChamadasProfessor = [], isLoading: loadingAllChamadasProfessor, refetch: refetchAllChamadasProfessor } = useQuery({
-    queryKey: [...CHAMADAS_QUERY_KEY, 'all-chamadas-professor', professorId],
-    queryFn: () => chamadaService.listByProfessor(professorId!), 
-    enabled: !!professorId,
+    queryKey: [...CHAMADAS_QUERY_KEY, 'all-chamadas-professor', userId],
+    queryFn: () => chamadaService.listByProfessor(userId!), 
+    enabled: userTipo === 'PROFESSOR' && !!userId
   });
 
   const chamadasOrdenadas = useMemo(() => {
@@ -25,10 +27,10 @@ const useChamadas = () => {
   }, [allChamadasProfessor]);
 
   const { data: chamadasAtivas = [], isLoading: loadingAtivas, refetch: refetchAtivas } = useQuery({
-    queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', professorId],
-    queryFn: () => chamadaService.listAtivasByProfessor(professorId!), 
-    enabled: !!professorId,
-    refetchInterval: 30000 
+    queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', userId],
+    queryFn: () => chamadaService.listAtivasByProfessor(userId!),
+    enabled: userTipo === 'PROFESSOR' && !!userId,
+    refetchInterval: userTipo === 'PROFESSOR' ? 30000 : false
   });
 
   const chamadasAtivasPorTurma = chamadasAtivas.reduce((acc, chamada) => {
@@ -36,11 +38,19 @@ const useChamadas = () => {
     return acc;
   }, {} as Record<number, Chamada>);
 
+  const { data: chamadaAtivaAluno = null, isLoading: loadingAtivaAluno, refetch: refetchAtivaAluno } = useQuery({
+    queryKey: [...CHAMADAS_QUERY_KEY, 'ativa-aluno'],
+    queryFn: () => chamadaService.getAtivaByAluno(),
+    enabled: userTipo === 'ALUNO' && !!userId,
+    refetchInterval: userTipo === 'ALUNO' ? 30000 : false
+  });
+
   const { mutate: createChamada, isPending: isCreating } = useMutation({
     mutationFn: (data: AbrirChamadaData) => chamadaService.create(data),
     onSuccess: () => {
       toast.success('Chamada aberta com sucesso');
       queryClient.invalidateQueries({ queryKey: CHAMADAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', userId] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || 'Erro ao abrir chamada');
@@ -52,6 +62,7 @@ const useChamadas = () => {
     onSuccess: () => {
       toast.success('Chamada encerrada com sucesso!');
       queryClient.invalidateQueries({ queryKey: CHAMADAS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [...CHAMADAS_QUERY_KEY, 'ativas', userId] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || 'Erro ao encerrar chamada');
@@ -70,6 +81,9 @@ const useChamadas = () => {
     allChamadasProfessor: chamadasOrdenadas,
     loadingAllChamadasProfessor,
     refetchAllChamadasProfessor,
+    chamadaAtivaAluno,
+    loadingAtivaAluno,
+    refetchAtivaAluno
   };
 };
 

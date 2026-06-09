@@ -1,12 +1,47 @@
+import { useState, useEffect, useRef } from 'react';
+import { LocateFixed, Info, Signal, CheckCircle2 } from 'lucide-react';
+import Button from '../ui/Button';
+import useGeolocation from '../hooks/useGeolocation';
+import useChamadas from '../hooks/useChamadas';
+import type { Turma } from '../types/turmas.types';
+import type { Coordenadas } from '../types/geo.types';
+
 interface DistanceRadarProps {
-  distance: number;
+  chamadaCoordenadas?: Coordenadas | null;
   maxRadius?: number;
+  onDistanceChange?: (distance: number) => void;
 }
 
-const DistanceRadar = ({ distance, maxRadius = 50 }: DistanceRadarProps) => {
+const DistanceRadar = ({ chamadaCoordenadas, maxRadius, onDistanceChange }: DistanceRadarProps) => {
+
+  const [distance, setDistance] = useState<number>(0);
+  const [isInRange, setIsInRange] = useState<boolean>(false);
+
+  const { 
+    coordenadas,
+    carregando,
+    erro,
+    capturarLocalizacao,
+    hasLocation
+  } = useGeolocation({
+    persistLocation: true
+  });
+
+  useEffect(() => {
+    if (hasLocation && coordenadas && chamadaCoordenadas) {
+      const calcDistance = calculateDistance(
+        coordenadas.latitude,
+        coordenadas.longitude,
+        chamadaCoordenadas.latitude,
+        chamadaCoordenadas.longitude
+      );
+      setDistance(calcDistance);
+      setIsInRange(calcDistance <= maxRadius);
+      onDistanceChange?.(calcDistance);
+    }
+  }, [coordenadas, chamadaCoordenadas, hasLocation, maxRadius]);
+
   const percentage = Math.min((distance / maxRadius) * 100, 100);
-  const isInRange = distance <= maxRadius;
-  
   const colorClass = isInRange ? 'text-success' : 'text-error';
   const bgClass = isInRange ? 'text-success' : 'text-error';
   const label = isInRange ? 'NO RAIO' : 'FORA DO RAIO';
@@ -30,16 +65,38 @@ const DistanceRadar = ({ distance, maxRadius = 50 }: DistanceRadarProps) => {
         </svg>
 
         <div className='absolute flex flex-col items-center'>
-          <span className='text-2xl font-black text-text-main'>{distance}m</span>
+          <span className='text-2xl font-black text-text-main'>{Math.round(distance)}m</span>
           <span className={`text-[10px] font-bold ${bgClass}`}>{label}</span>
         </div>
       </div>
 
       <p className='text-sm text-text-muted'>
-        Está a {distance} metros do ponto central da sala.
+        {hasLocation && chamadaCoordenadas 
+          ? `Você está a ${Math.round(distance)} metros do ponto de referência`
+          : 'Ative sua localização para ver a distância'}
       </p>
+
+      <Button 
+        onClick={capturarLocalizacao} 
+        disabled={carregando} 
+        icon={<Signal size={20} />} 
+        className={`py-3 w-full ${hasLocation ? 'bg-input-bg !text-text-main hover:bg-border border border-border shadow-none' : ''}`}
+      >
+        {carregando ? 'Capturando...' : hasLocation ? 'Atualizar Localização' : 'Ativar Localização'}
+      </Button>
     </div>
   );
+}
+
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371000; // Raio da Terra em metros
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 
 export default DistanceRadar;

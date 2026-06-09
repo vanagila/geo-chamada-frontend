@@ -1,4 +1,4 @@
-import api from './api.ts';
+import api from './api';
 import type { Chamada, AbrirChamadaData, RelatorioChamada } from '../types/chamadas.types';
 
 const chamadaService = {
@@ -9,6 +9,11 @@ const chamadaService = {
 
   listAtivasByProfessor: async (id: number): Promise<Chamada[]> => {
     const response = await api.get(`/api/v1/chamadas/professor/ativas/${id}`);
+    return response.data
+  },
+
+  getAtivaByAluno: async (): Promise<Chamada> => {
+    const response = await api.get(`/api/v1/chamadas/aluno/ativa`);
     return response.data
   },
 
