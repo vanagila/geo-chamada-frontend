@@ -6,6 +6,7 @@ export interface Coordenadas {
 export interface UseGeolocationOptions {
   enableHighAccuracy?: boolean;
   timeout?: number;
+  persistLocation?: boolean; 
   onSuccess?: (coords: Coordenadas) => void;
   onError?: (error: string) => void;
 }
@@ -14,5 +15,6 @@ export interface UseGeolocationReturn {
   coordernadas: Coordenadas | null;
   carregando: boolean;
   erro: string | null;
+  hasLocation: boolean;
   capturarLocalizacao: () => void;
 }

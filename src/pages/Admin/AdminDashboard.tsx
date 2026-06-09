@@ -1,6 +1,6 @@
 import { MoreVertical, Plus, Search, Bell, Settings, Users, User, GraduationCap, CheckCircle, MapPin, UserCheck, UserPlus, AlertTriangle, Edit } from 'lucide-react';
-import Header from '../../components/Header'
-import Sidebar from '../../components/Sidebar';
+import Header from '../../components/layout/Header'
+import Sidebar from '../../components/layout/Sidebar';
 import ActivityFeed from '../../components/ActivityFeed'
 import ClassSummary from '../../components/ClassSummary'
 import StatCard from '../../ui/StatCard';

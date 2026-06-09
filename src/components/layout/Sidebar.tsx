@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { MapPin, LayoutDashboard, BookOpen, Users, Presentation, GraduationCap, FileText, LogOut } from 'lucide-react';
-import useAuth from '../hooks/useAuth';
+import { MapPin, LayoutDashboard, BookOpen, Users, Presentation, GraduationCap, FileText, LogOut, Radio } from 'lucide-react';
+import useAuth from '../../hooks/useAuth';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ const Sidebar = () => {
       return [
         { label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/professor/dashboard' },
         { label: 'Minhas Turmas', icon: <Users size={20} />, path: '/professor/turmas' },
+        { label: 'Chamadas', icon: <Radio size={20} />, path: '/professor/chamadas' },
       ];
     }
 

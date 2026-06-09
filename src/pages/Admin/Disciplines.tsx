@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Plus } from 'lucide-react';
 import useDiscipline from '../../hooks/useDiscipline'
-import Sidebar from '../../components/Sidebar.tsx';
-import Header from '../../components/Header';
+import Sidebar from '../../components/layout/Sidebar.tsx';
+import Header from '../../components/layout/Header';
 import DisciplineFilters from '../../components/DisciplineFilters';
 import DisciplinesTable from '../../components/DisciplinesTable';
 import CreateDisciplineModal from '../../components/CreateDisciplineModal'

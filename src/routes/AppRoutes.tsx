@@ -9,7 +9,10 @@ import AdminDashboard from '../pages/Admin/AdminDashboard';
 import Disciplines from '../pages/Admin/Disciplines';
 import Turmas from '../pages/Admin/Turmas'
 // Professor
-import TeacherDashboard from '../pages/Teacher/TeacherDashboard';
+import ProfessorDashboard from '../pages/Professor/ProfessorDashboard';
+import TurmasProfessor from '../pages/Professor/TurmasProfessor';
+import Chamadas from '../pages/Professor/Chamadas';
+import RelatorioChamada from '../pages/Professor/RelatorioChamada';
 // Aluno
 import StudentDashboard from '../pages/Student/StudentDashboard';
 
@@ -68,11 +71,31 @@ const AppRoutes = () => {
       <Route path='/professor/dashboard' 
         element={
           <ProtectedRoute allowedRoles={['PROFESSOR']}>
-            <TeacherDashboard/>
+            <ProfessorDashboard/>
           </ProtectedRoute>
         }
       />
-
+      <Route path='/professor/turmas' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <TurmasProfessor/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/professor/chamadas' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <Chamadas/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/professor/chamada/:id/relatorio' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <RelatorioChamada/>
+          </ProtectedRoute>
+        }
+      />
 
       {/*Aluno*/}
       <Route path='/aluno/dashboard'

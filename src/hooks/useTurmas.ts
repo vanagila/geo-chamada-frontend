@@ -1,17 +1,22 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import turmaService from '../services/turmas';
-import type { TurmaCreate, TurmaUpdate } from '../types/turmas.types'
+import useAuth from './useAuth';
+import type { TurmaCreate, TurmaUpdate } from '../types/turmas.types';
 
 const TURMAS_QUERY_KEY = ['turmas']
 
 const useTurmas = () => {
   const queryClient = useQueryClient();
 
+  const { user, loading: authLoading } = useAuth();
+  const professorId = user?.id;
+
   const { data: turmas = [], isLoading, error, refetch } = useQuery({
     queryKey: TURMAS_QUERY_KEY,
     queryFn: () => turmaService.list(),
-    staleTime: 1000 * 60 * 5
+    staleTime: 1000 * 60 * 5,
+    enabled: false
   });
 
   const { mutate: createTurma, isPending: isCreating } = useMutation({
@@ -74,6 +79,20 @@ const useTurmas = () => {
     },
   });
 
+  const { data: turmasProfessor = [], isLoading: isLoadingTurmas, error: errorTurma, refetch: refetchTurma } = useQuery({
+    queryKey: [TURMAS_QUERY_KEY, professorId],
+    queryFn: async () => {
+      if (!professorId) {
+        console.warn('⚠️ professorId não disponível ainda');
+        return [];
+      }
+      const result = await turmaService.getByProfessor(professorId);
+      return result;
+    },
+    enabled: !!professorId && !authLoading,
+    staleTime: 1000 * 60 * 5
+  });
+
   return {
     turmas,
     isLoading,
@@ -88,7 +107,11 @@ const useTurmas = () => {
     addProfessor,
     isAddingProfessor,
     addAluno,
-    isAddingAluno
+    isAddingAluno,
+    turmasProfessor,
+    isLoadingTurmas: isLoadingTurmas || authLoading,
+    errorTurma,
+    refetchTurma
   };
 };
 

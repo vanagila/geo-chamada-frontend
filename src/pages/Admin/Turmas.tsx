@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Plus } from 'lucide-react';
 import useTurmas from '../../hooks/useTurmas'
-import Sidebar from '../../components/Sidebar.tsx';
-import Header from '../../components/Header';
+import Sidebar from '../../components/layout/Sidebar.tsx';
+import Header from '../../components/layout/Header';
 import Button from '../../ui/Button'
 import TurmasTable from '../../components/Turmas/TurmasTable'
 import CreateTurmaModal from '../../components/Turmas/CreateTurmaModal'
