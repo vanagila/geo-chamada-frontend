@@ -1,6 +1,8 @@
-import { History } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { History, BookOpen } from 'lucide-react';
 import Badge from '../../ui/Badge';
 import ProgressBar from '../../ui/ProgressBar';
+import RelatorioChamada from '../../pages/Professor/RelatorioChamada';
 import type { Chamada } from '../../types/chamadas.types.ts';
 import type { Turma } from '../../types/turmas.types';
 
@@ -27,6 +29,12 @@ const HistoricoChamadaTable = ({ chamadas, turmas, isLoading }: HistoricoChamada
     const dataFormatada = data.toLocaleDateString('pt-BR');
     return `${dataFormatada} às ${horasMinutos}`;
   };
+
+  const navigate = useNavigate();
+
+  const handleVerRelatorio = (chamadaId: number) => {
+    navigate(`/professor/chamada/${chamadaId}/relatorio`);
+  }
 
   return (
     <section>
@@ -95,7 +103,9 @@ const HistoricoChamadaTable = ({ chamadas, turmas, isLoading }: HistoricoChamada
                       </Badge>
                     </td>
                     <td className='px-6 py-4 text-right'>
-                      <button className='text-brand font-bold hover:underline cursor-pointer'>
+                      <button 
+                        onClick={() => handleVerRelatorio(chamada.id)}
+                        className='text-brand font-bold hover:underline cursor-pointer'>
                         Ver Detalhes
                       </button>
                     </td>

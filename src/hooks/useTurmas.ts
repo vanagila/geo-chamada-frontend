@@ -82,13 +82,11 @@ const useTurmas = () => {
   const { data: turmasProfessor = [], isLoading: isLoadingTurmas, error: errorTurma, refetch: refetchTurma } = useQuery({
     queryKey: [TURMAS_QUERY_KEY, professorId],
     queryFn: async () => {
-      console.log('Buscando turmas para professor:', professorId);
       if (!professorId) {
         console.warn('⚠️ professorId não disponível ainda');
         return [];
       }
       const result = await turmaService.getByProfessor(professorId);
-      console.log('Turmas recebidas:', result);
       return result;
     },
     enabled: !!professorId && !authLoading,

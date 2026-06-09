@@ -2,12 +2,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import chamadaService from '../services/chamadas';
+import useAuth from '../hooks/useAuth.ts';
 import type { AbrirChamadaData } from '../types/chamadas.types';
 
 const CHAMADAS_QUERY_KEY = ['chamadas']
 
-const useChamadas = (professorId?: number) => {
+const useChamadas = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const professorId = user?.id;
 
   const { data: allChamadasProfessor = [], isLoading: loadingAllChamadasProfessor, refetch: refetchAllChamadasProfessor } = useQuery({
     queryKey: [...CHAMADAS_QUERY_KEY, 'all-chamadas-professor', professorId],
@@ -66,7 +69,7 @@ const useChamadas = (professorId?: number) => {
     chamadasAtivasPorTurma,
     allChamadasProfessor: chamadasOrdenadas,
     loadingAllChamadasProfessor,
-    refetchAllChamadasProfessor
+    refetchAllChamadasProfessor,
   };
 };
 

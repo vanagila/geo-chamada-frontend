@@ -36,9 +36,6 @@ const TurmaCard = ({
     isEncerrando
   } = useChamadas();
 
-  console.log(configuracao)
-  console.log(chamadaAtiva)
-
   const handleAbrirChamada = () => {
     if (!configuracao.hasLocation || !configuracao.coordenadas) {
       toast.error('Configure a sua localização no painel ao lado');

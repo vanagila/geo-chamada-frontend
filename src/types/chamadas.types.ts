@@ -3,13 +3,13 @@ import type { ProfessorSimplificado } from './user.types'
 
 export enum ChamadaStatus {
   ABERTA = 'ABERTA',
-  FECHADA = 'FECHADA'
+  FECHADA = 'ENCERRADA'
 }
 
 export interface AbrirChamadaData {
   turma_id: number;
   raio: number;
-  coordernadas: Coordenadas 
+  coordenadas: Coordenadas 
 }
 
 export interface Chamada {
@@ -37,6 +37,23 @@ export interface ChamadaResumida {
   raio: number;
 }
 
+export interface AlunoRelatorio {
+  id: number;
+  nome: string;
+  email: string;
+  matricula?: string;
+}
+
+export interface PresencaRelatorio {
+  id: number;
+  aluno: AlunoRelatorio;
+  chamada_id: number;
+  distancia_calculada: number | null;
+  data_registro: string;
+  status: string;
+  dentro_raio: boolean;
+}
+
 export interface RelatorioChamada {
   chamada: {
     id: number;
@@ -44,20 +61,12 @@ export interface RelatorioChamada {
     data_encerramento: string | null;
     raio: number;
     status: ChamadaStatus;
-  },
-  presencas: {
-    id: number;
-    aluno_id: number;
-    chamada_id: number;
-    distancia_calculada: number;
-    data_registro: string;
-    status: string;
-    dentro_raio: boolean;
-  },
+  };
+  presencas: PresencaRelatorio[];
   estatisticas: {
     total: number;
     presentes: number;
     ausentes: number;
     abonadas: number;
-  }
+  };
 }

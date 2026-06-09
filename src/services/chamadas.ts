@@ -1,5 +1,5 @@
 import api from './api.ts';
-import type { Chamada, AbrirChamadaData } from '../types/chamadas.types';
+import type { Chamada, AbrirChamadaData, RelatorioChamada } from '../types/chamadas.types';
 
 const chamadaService = {
   listByProfessor: async (id: number): Promise<Chamada[]> => {
@@ -8,7 +8,12 @@ const chamadaService = {
   },
 
   listAtivasByProfessor: async (id: number): Promise<Chamada[]> => {
-    const response = await api.get(`/api/v1/chamadas/professor/ativas/${id}`)
+    const response = await api.get(`/api/v1/chamadas/professor/ativas/${id}`);
+    return response.data
+  },
+
+  relatorioChamada: async (id: number): Promise<RelatorioChamada> => {
+    const response = await api.get(`/api/v1/chamadas/${id}/relatorio`);
     return response.data
   },
 
