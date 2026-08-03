@@ -1,3 +1,4 @@
+import { BookOpen } from 'lucide-react';
 import type { Turma } from '../../types/turmas.types';
 import TableWrapper from '../../components/TableWrapper.tsx';
 import TurmaRow from './TurmaRow'

@@ -17,7 +17,7 @@ const useTurmas = () => {
     queryKey: TURMAS_QUERY_KEY,
     queryFn: () => turmaService.list(),
     staleTime: 1000 * 60 * 5,
-    enabled: false
+    enabled: userTipo === 'ADMIN' && !authLoading
   });
 
   const { mutate: createTurma, isPending: isCreating } = useMutation({

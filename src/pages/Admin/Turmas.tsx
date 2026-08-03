@@ -15,7 +15,8 @@ const Turmas = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTurma, setEditingTurma] = useState<Disciplina | null>(null);
   const [turmaToDelete, setTurmaToDelete] = useState<Turma | null>(null);
-  const [turmaParaVincular, setTurmaParaVincular] = useState<Turma | null>(null);
+  const [turmaParaVincularProfessor, setTurmaParaVincularProfessor] = useState<Turma | null>(null);
+  const [turmaParaVincularAluno, setTurmaParaVincularAluno] = useState<Turma | null>(null);
 
   const {
     turmas,
@@ -27,6 +28,8 @@ const Turmas = () => {
     deleteTurma,
     isDeleting
   } = useTurmas();
+
+  console.log(turmas)
 
   const handleSubmit = async (data: TurmaFormData) => {
     if (editingTurma) {
@@ -89,8 +92,8 @@ const Turmas = () => {
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDeleteClick}
-            onAssignProfessor={(turma) => setTurmaParaVincular(turma)}
-            onAssignAluno={(turma) => setTurmaParaVincular(turma)}
+            onAssignProfessor={(turma) => setTurmaParaVincularProfessor(turma)}
+            onAssignAluno={(turma) => setTurmaParaVincularAluno(turma)}
           />
         </main>
       </div>
@@ -114,26 +117,26 @@ const Turmas = () => {
         isDeleting={isDeleting}
       />
 
-      {turmaParaVincular && (
+      {turmaParaVincularProfessor && (
         <AssignProfessorModal 
           isOpen={true}
-          onClose={() => setTurmaParaVincular(null)}
-          turmaId={turmaParaVincular.id}
-          turmaCodigo={turmaParaVincular.codigo}
+          onClose={() => setTurmaParaVincularProfessor(null)}
+          turmaId={turmaParaVincularProfessor.id}
+          turmaCodigo={turmaParaVincularProfessor.codigo}
           onSuccess={() => {
-            setTurmaParaVincular(null);
+            setTurmaParaVincularProfessor(null);
           }}
         />
       )}
 
-      {turmaParaVincular && (
+      {turmaParaVincularAluno && (
         <AssignAlunoModal 
           isOpen={true}
-          onClose={() => setTurmaParaVincular(null)}
-          turmaId={turmaParaVincular.id}
-          turmaCodigo={turmaParaVincular.codigo}
+          onClose={() => setTurmaParaVincularAluno(null)}
+          turmaId={turmaParaVincularAluno.id}
+          turmaCodigo={turmaParaVincularAluno.codigo}
           onSuccess={() => {
-            setTurmaParaVincular(null);
+            setTurmaParaVincularAluno(null);
           }}
         />
       )}

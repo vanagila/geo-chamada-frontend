@@ -35,7 +35,6 @@ const turmaService = {
   update: async (id: number, data: TurmaUpdate): Promise<Turma> => {
     const response = await api.put(`api/v1/turmas/${id}`, data);
     return response.data
-
   },
 
   delete: async (id: number): Promise<void> => {
