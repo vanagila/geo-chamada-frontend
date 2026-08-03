@@ -1,0 +1,114 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import ProtectedRoute from './ProtectedRoute';
+// Paginas publicas
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
+// Admin
+import AdminDashboard from '../pages/Admin/AdminDashboard';
+import Disciplines from '../pages/Admin/Disciplines';
+import Turmas from '../pages/Admin/Turmas'
+// Professor
+import ProfessorDashboard from '../pages/Professor/ProfessorDashboard';
+import TurmasProfessor from '../pages/Professor/TurmasProfessor';
+import Chamadas from '../pages/Professor/Chamadas';
+import RelatorioChamada from '../pages/Professor/RelatorioChamada';
+// Aluno
+import AlunoDashboard from '../pages/Aluno/AlunoDashboard';
+
+const AppRoutes = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className='min-h-screen flex items-center justify-center bg-app-bg text-brand font-bold'>
+        Carregando...
+      </div>
+    );
+  }
+
+  const getDefaultRoute = () => {
+    if (!user) return '/login';
+    switch (user.tipo) {
+      case 'ADMIN': return '/admin/dashboard';
+      case 'PROFESSOR': return '/professor/dashboard';
+      case 'ALUNO': return '/aluno/dashboard';
+      default: return '/login';
+    }
+  };
+
+  return (
+    <Routes>
+      {/*Rotas publicas*/}
+      <Route path='/cadastro' element={<Signup/>} />
+      <Route path='/login' element={<Login/>} />
+      <Route path='/' element={<Navigate to={getDefaultRoute()} replace />} />
+
+      {/*Admin*/}
+      <Route path='/admin/dashboard' 
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <AdminDashboard/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/admin/disciplinas' 
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <Disciplines/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/admin/turmas' 
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <Turmas/>
+          </ProtectedRoute>
+        }
+      />
+
+      {/*Professor*/}
+      <Route path='/professor/dashboard' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <ProfessorDashboard/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/professor/turmas' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <TurmasProfessor/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/professor/chamadas' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <Chamadas/>
+          </ProtectedRoute>
+        }
+      />
+      <Route path='/professor/chamada/:id/relatorio' 
+        element={
+          <ProtectedRoute allowedRoles={['PROFESSOR']}>
+            <RelatorioChamada/>
+          </ProtectedRoute>
+        }
+      />
+
+      {/*Aluno*/}
+      <Route path='/aluno/dashboard'
+        element={
+          <ProtectedRoute allowedRoles={['ALUNO']}>
+            <AlunoDashboard/>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path='*' element={<Navigate to={getDefaultRoute()} replace />} />
+    </Routes>
+  )
+}
+
+export default AppRoutes;
