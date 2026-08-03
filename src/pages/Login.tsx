@@ -1,11 +1,10 @@
 import { MapPin, Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Input from '../ui/Input';
 import Button from '../ui/Button'
 import useAuth from '../hooks/useAuth';
-import config from '../config';
 
 const Login = () => {
   const navigate = useNavigate();

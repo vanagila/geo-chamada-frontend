@@ -13,7 +13,7 @@ const turmaService = {
   },
 
   getByCode: async (codigo: string): Promise<TurmaResponse> => {
-    const response = await api.get(`/api/v1/turmas/${code}`);
+    const response = await api.get(`/api/v1/turmas/${codigo}`);
     return response.data
   },
 

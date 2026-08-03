@@ -1,12 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 import usuarioService from '../services/usuarios';
 
 const PROFESSORES_QUERY_KEY = ['professores']
 const ALUNOS_QUERY_KEY = ['alunos'];
 
 const useUsuarios = () => {
-  const queryClient = useQueryClient();
 
   const { data: professores = [], isLoading: loadingProfessores, error, refetch } = useQuery({
     queryKey: PROFESSORES_QUERY_KEY,

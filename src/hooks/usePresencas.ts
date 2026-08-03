@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import type { RegistrarPresencaData } from '../types/presencas.types.ts';
 import presencaService from '../services/presencas';
@@ -31,7 +31,6 @@ const usePresencas = () => {
     },
     
     onSuccess: (data: PresencaResponse, variables: RegistrarPresencaData) => {
-      // ✅ Agora 'data' está disponível corretamente
       console.log('✅ Resposta da API:', data);
       console.log('📦 Dados enviados:', variables);
       
@@ -57,7 +56,6 @@ const usePresencas = () => {
         message: error.message,
       });
       
-      // Tratamento específico por tipo de erro
       if (error.response?.status === 400) {
         toast.error('Dados inválidos. Verifique as informações.');
       } else if (error.response?.status === 401) {

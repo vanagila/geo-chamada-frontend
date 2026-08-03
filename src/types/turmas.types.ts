@@ -17,6 +17,7 @@ export interface Turma {
   codigo: string;
   disciplina_id: number;
   disciplina?: DisciplinaSimplificada;
+  disciplina_nome?: string;
   semestre: string;
   ano: number;
   horario: string;        // formato: "08:00:00"
@@ -52,7 +53,6 @@ export interface TurmaUpdate {
 }
 
 export interface TurmaResponse extends Turma {
-  disciplina_nome?: string;
   professores_count?: number;
   alunos_count?: number;
 }

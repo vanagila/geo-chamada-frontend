@@ -1,13 +1,12 @@
-import { Eye, EyeOff, Lock, KeyRound, UserPlus, Mail, User, GraduationCap, Presentation, Briefcase, UserCheck, Hash} from 'lucide-react';
+import { Eye, EyeOff, Lock, KeyRound, UserPlus, Mail, User, GraduationCap, Presentation,  UserCheck, Hash} from 'lucide-react';
 import Input from '../ui/Input';
 import Button from '../ui/Button'
 import RadioCardGroup from '../ui/RadioCardGroup'
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useAuth from '../hooks/useAuth';
-import config from '../config'
 import { registerSchema, type RegisterFormData } from '../schemas/auth.schemas';
 
 const typeOptions: RadioOptions[] = [

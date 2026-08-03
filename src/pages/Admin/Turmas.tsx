@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import useTurmas from '../../hooks/useTurmas'
 import Sidebar from '../../components/layout/Sidebar.tsx';
@@ -28,8 +28,6 @@ const Turmas = () => {
     deleteTurma,
     isDeleting
   } = useTurmas();
-
-  console.log(turmas)
 
   const handleSubmit = async (data: TurmaFormData) => {
     if (editingTurma) {

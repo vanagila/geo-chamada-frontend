@@ -3,13 +3,12 @@ import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import chamadaService from '../services/chamadas';
 import useAuth from '../hooks/useAuth.ts';
-import type { AbrirChamadaData } from '../types/chamadas.types';
+import type { AbrirChamadaData, Chamada } from '../types/chamadas.types';
 
 const CHAMADAS_QUERY_KEY = ['chamadas']
 
 const useChamadas = () => {
   const queryClient = useQueryClient();
-  
   const { user } = useAuth();
   const userId = user?.id;
   const userTipo = user?.tipo;

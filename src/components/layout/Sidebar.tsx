@@ -1,9 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { MapPin, LayoutDashboard, BookOpen, Users, Presentation, GraduationCap, FileText, LogOut, Radio } from 'lucide-react';
+import { NavLink } from "react-router-dom";
+import { LayoutDashboard, BookOpen, Users, Presentation, GraduationCap, FileText, LogOut, Radio } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const getNavItems = () => {

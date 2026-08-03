@@ -1,10 +1,8 @@
 import type { Coordenadas } from './geo.types'
 import type { ProfessorSimplificado } from './user.types'
+import type { TurmaSimplificada } from './turmas.types'
 
-export enum ChamadaStatus {
-  ABERTA = 'ABERTA',
-  FECHADA = 'ENCERRADA'
-}
+export type StatusChamada = "ABERTA" | "ENCERRADA";
 
 export interface AbrirChamadaData {
   turma_id: number;

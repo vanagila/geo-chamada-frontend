@@ -2,8 +2,6 @@ import { useState, ChangeEvent, useEffect, useRef } from 'react';
 import { LocateFixed, Info, Signal, CheckCircle2 } from 'lucide-react';
 import Button from '../ui/Button';
 import useGeolocation from '../hooks/useGeolocation';
-import useChamadas from '../hooks/useChamadas';
-import type { Turma } from '../types/turmas.types';
 import type { Coordenadas } from '../types/geo.types';
 
 interface GeofenceCardProps {

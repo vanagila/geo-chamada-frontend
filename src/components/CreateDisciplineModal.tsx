@@ -5,7 +5,8 @@ import { X, BookOpen } from 'lucide-react';
 import Button from '../ui/Button'; 
 import Input from '../ui/Input';
 import { disciplineSchema } from '../schemas/discipline.schemas'
-import type { Disciplina, DisciplinaFormData } from '../types/discipline.types';
+import type { DisciplinaFormData } from '../schemas/discipline.schemas'
+import type { Disciplina } from '../types/discipline.types';
 
 interface CreateDisciplineModalProps {
   isOpen: boolean;
@@ -40,10 +41,7 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initia
   }, [isOpen, reset, initialData]);
 
   const handleFormSubmit = (data: DisciplinaFormData) => {
-    onSubmit({
-      ...data,
-      carga_horaria: Number(data.carga_horaria),
-    });
+    onSubmit(data);
   };
 
   if (!isOpen) return null;
@@ -86,7 +84,7 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initia
               label='Carga Horária'
               placeholder='60'
               rightElement={<span className='text-xs font-medium text-text-muted pr-3'>horas</span>}
-              {...register('carga_horaria', { valueAsNumber: true })}
+              {...register('carga_horaria')}
               error={errors.carga_horaria?.message}
             />
           </div>

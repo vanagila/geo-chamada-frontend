@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface RadioOption {

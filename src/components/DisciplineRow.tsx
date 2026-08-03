@@ -86,7 +86,7 @@ const DisciplineRow = ({ discipline, onEdit, onDelete, isDeleting }: DisciplineR
             <Edit size={18} />
           </button>
           <button 
-            onClick={() => onDelete(discipline)}
+            onClick={() => onDelete(discipline.id)}
             className='p-2 hover:bg-error/10 text-error rounded-lg transition-colors cursor-pointer' title='Excluir'>
             <Trash2 size={18} />
           </button>

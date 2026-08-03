@@ -1,11 +1,7 @@
 import type { Coordenadas } from './geo.types';
 import type { DisciplinaResumo } from './discipline.types';
 
-export enum PresencaStatus {
-  PRESENTE = "PRESENTE",
-  AUSENTE = "AUSENTE",
-  ABONADA = "ABONADA",
-}
+export type PresencaStatus = "PRESENTE" | "AUSENTE" | "ABONADA";
 
 export interface RegistrarPresencaData {
   chamada_id: number;

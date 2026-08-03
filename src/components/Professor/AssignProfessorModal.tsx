@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { X, UserPlus } from 'lucide-react';
 import Button from '../../ui/Button';

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { History, BookOpen } from 'lucide-react';
 import Badge from '../../ui/Badge';
 import ProgressBar from '../../ui/ProgressBar';
-import RelatorioChamada from '../../pages/Professor/RelatorioChamada';
 import type { Chamada } from '../../types/chamadas.types.ts';
 import type { Turma } from '../../types/turmas.types';
 

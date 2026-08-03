@@ -1,4 +1,4 @@
-type ProgressVariant = 'success' | 'warning' | 'error' | 'default' | 'brand';
+type ProgressVariant = 'success' | 'warning' | 'error' | 'brand';
 
 interface ProgressBarProps {
   value: number;

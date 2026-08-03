@@ -2,8 +2,8 @@ export interface RegisterData {
   nome: string;
   email: string;
   tipo: 'ALUNO' | 'PROFESSOR' | 'ADMIN';
-  matricula: string;
-  registro_professor: string;
+  matricula?: string | null;
+  registro_professor?: string | null;
   senha: string;
 }
 
@@ -33,4 +33,6 @@ export interface AuthContextType {
   user: User | null;
   loading: boolean;
   register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
+  login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
 }

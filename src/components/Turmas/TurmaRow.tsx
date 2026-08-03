@@ -80,7 +80,7 @@ const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAs
             <Edit size={18} />
           </button>
           <button 
-            onClick={() => onDelete(turma)}
+            onClick={() => onDelete(turma.id)}
             className='p-2 hover:bg-error/10 text-error rounded-lg transition-colors cursor-pointer' title='Excluir'>
             <Trash2 size={18} />
           </button>

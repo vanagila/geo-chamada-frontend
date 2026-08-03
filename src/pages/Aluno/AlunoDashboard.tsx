@@ -14,13 +14,9 @@ import StudentHistoryList from '../../components/StudentHistoryList.tsx';
 
 const AlunoDashboard = () => {
   const { user } = useAuth();
-  const [distance, setDistance] = useState<number>(0);
 
   const { 
-    turmasAluno, 
-    isLoadingTurmasAluno, 
-    errorTurmaAluno, 
-    refetchTurmaAluno 
+    turmasAluno,
   } = useTurmas();
 
   const {
