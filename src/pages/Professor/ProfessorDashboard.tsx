@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, Plus, Users } from 'lucide-react';
+import { BookOpen, Users } from 'lucide-react';
 import Sidebar from '../../components/layout/Sidebar';
 import Header from '../../components/layout/Header';
 import TurmaCard from '../../components/Turmas/TurmaCard';
@@ -21,26 +21,23 @@ const ProfessorDashboard = () => {
 
   const { 
     turmasProfessor, 
-    isLoadingTurmas, 
-    errorTurma, 
+    isLoadingTurmas,
     refetchTurma 
   } = useTurmas();
 
   const { 
     chamadasAtivasPorTurma, 
-    loadingAtivas, 
-    refetchAtivas,
     allChamadasProfessor: chamadasOrdenadas,
     loadingAllChamadasProfessor
-  } = useChamadas(user?.id);
+  } = useChamadas();
 
-  const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
-    setConfiguracao({
-      raio: novaConfig.raio,
-      coordenadas: novaConfig.coordenadas,
-      hasLocation: !!novaConfig.coordenadas,
-    });
-  };
+  //const handleConfigChange = (novaConfig: { raio: number; coordenadas: any }) => {
+  //  setConfiguracao({
+  //    raio: novaConfig.raio,
+  //    coordenadas: novaConfig.coordenadas,
+  //    hasLocation: !!novaConfig.coordenadas,
+  //  });
+  //};
 
   const handleSuccess = () => {
     refetchTurma();

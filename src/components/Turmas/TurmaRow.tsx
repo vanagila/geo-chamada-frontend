@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import { Edit, Trash2, Album, UserPlus, Users } from 'lucide-react';
-import type { Turma } from '../types/tumas.types';
+import type { Turma } from '../../types/turmas.types';
 
 interface TurmaRowProps {
   turma: Turma;
   onEdit: (turma: Turma) => void;
   onDelete: (id: number) => void;
-  isDeleting?: boolean;
   onAssignProfessor: (turma: Turma) => void;
   onAssignAluno: (turma: Turma) => void;
 }
 
-const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAssignAluno }: TurmaRowProps) => {
+const TurmaRow = ({ turma, onEdit, onDelete, onAssignProfessor, onAssignAluno }: TurmaRowProps) => {
 
   const getIconColor = (codigo: string) => {
     const colors = [
@@ -41,6 +39,11 @@ const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAs
     return horario.substring(0, 5);
   };
 
+  const professores = turma.professores || [];
+  const temProfessores = professores.length > 0;
+  const primeiroProfessor = temProfessores ? professores[0] : null;
+  const maisProfessores = professores.length > 1 ? professores.length - 1 : 0;
+
   return (
     <tr className='hover:bg-input-bg/50 transition-colors group'>
       <td className='px-6 py-4'>
@@ -54,22 +57,43 @@ const TurmaRow = ({ turma, onEdit, onDelete, isDeleting, onAssignProfessor, onAs
         </div>
       </td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.disciplina_nome}</td>
+      <td className='px-6 py-4'>
+        {temProfessores ? (
+          <div className='flex flex-col items-start gap-0.5'>
+            <div className='flex items-center gap-2'>
+              <div className='w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-[10px] font-bold text-brand shrink-0'>
+                {primeiroProfessor?.nome?.charAt(0) || '?'}
+              </div>
+              <span className='text-sm font-medium text-text-main'>
+                {primeiroProfessor?.nome || 'Sem nome'}
+              </span>
+            </div>
+            {maisProfessores > 0 && (
+              <span className='text-[10px] text-text-muted ml-9'>
+                + {maisProfessores} outro(s) professor(es)
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className='text-sm text-text-muted italic'>Nenhum professor</span>
+        )}
+      </td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.semestre}</td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{turma.ano}</td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{formatarHorario(turma.horario)}</td>
       <td className='px-6 py-4 font-medium text-center text-text-muted'>{formatarData(turma.data_inicio)} {formatarData(turma.data_fim)}</td>
-      <td className='px-6 py-4 text-right'>
+      <td className='px-3 py-3 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>
           <button
             onClick={() => onAssignProfessor(turma)}
-            className='p-2 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
+            className='p-1.5 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
             title='Vincular / Alterar Professor'
           >
             <UserPlus size={18} />
           </button>
           <button
             onClick={() => onAssignAluno(turma)}
-            className='p-2 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
+            className='p-1.5 hover:bg-blue-500/10 text-blue-500 rounded-lg transition-colors cursor-pointer' 
             title='Matricular Aluno'
           >
             <Users size={18} />

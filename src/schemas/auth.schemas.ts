@@ -7,7 +7,7 @@ export const registerSchema = z.object({
   email: z.string()
     .min(1, 'E-mail é obrigatório')
     .email('E-mail inválido'),
-  tipo: z.enum(['ALUNO', 'PROFESSOR', 'ADMIN'], { errorMap: () => ({ message: 'Tipo de usuário inválido' }) }),
+  tipo: z.enum(['ALUNO', 'PROFESSOR', 'ADMIN',]),
   matricula: z.string().optional(),
   registro_professor: z.string().optional(),
   senha: z.string()

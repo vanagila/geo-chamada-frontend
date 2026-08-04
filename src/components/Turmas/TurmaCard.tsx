@@ -13,7 +13,7 @@ interface TurmaCardProps {
   status: 'pronta' | 'aguardando';
   configuracao: {
     raio: number;
-    coordenadas: { latitude: number; longitude: number } | null;
+    coordenadas: Coordenadas | null;
     hasLocation: boolean;
   };
   chamadaAtiva?: {

@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect} from 'react';
+import { createContext, useState, useEffect} from 'react';
 import type { ReactNode } from 'react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
@@ -79,7 +79,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (data: RegisterData) => {
     try {
-      const response = await api.post<User>('api/v1/auth/register', data, {
+      await api.post<User>('api/v1/auth/register', data, {
         headers: {
           'Content-Type': 'application/json',
         },

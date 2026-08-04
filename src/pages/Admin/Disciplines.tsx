@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import useDiscipline from '../../hooks/useDiscipline'
 import Sidebar from '../../components/layout/Sidebar.tsx';
@@ -16,7 +16,6 @@ const Disciplines = () => {
   const [disciplineToDelete, setDisciplineToDelete] = useState<Disciplina | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterHours, setFilterHours] = useState('');
-  const [filterProfessor, setFilterProfessor] = useState('');
 
   const {
     disciplines,
@@ -30,23 +29,21 @@ const Disciplines = () => {
   } = useDiscipline();
 
   const handleSubmit = (data: DisciplinaFormData) => {
+
+    const payload = {
+      nome: data.nome,
+      codigo: data.codigo,
+      carga_horaria: data.carga_horaria,
+      descricao: data.descricao || '',
+    };
+
     if (editingDiscipline) {
       updateDiscipline({
         id: editingDiscipline.id,
-        data: {
-          nome: data.nome,
-          codigo: data.codigo,
-          descricao: data.descricao,
-          carga_horaria: data.carga_horaria
-        },
+        data: payload,
       });
     } else {
-      createDiscipline({
-        nome: data.nome,
-        codigo: data.codigo,
-        descricao: data.descricao,
-        carga_horaria: data.carga_horaria
-      });
+      createDiscipline(payload);
     }
     setIsModalOpen(false)
     setEditingDiscipline(null)
@@ -57,9 +54,12 @@ const Disciplines = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteClick = (discipline: Disciplina) => {
-    setDisciplineToDelete(discipline);
-  }
+  const handleDeleteClick = (id: number) => {
+    const disciplinaEncontrada = disciplines.find(d => d.id === id);
+    if (disciplinaEncontrada) {
+      setDisciplineToDelete(disciplinaEncontrada);
+    }
+  };
 
   const handleConfirmDelete = () => {
     if (!disciplineToDelete) return;
@@ -76,14 +76,6 @@ const Disciplines = () => {
     setIsModalOpen(true);
   }
 
-  const professoresUnicos = useMemo(() => {
-    if (!disciplines) return [];
-    const nomes = disciplines.map(d => d.professor?.nome)
-      .filter(Boolean) as string[];
-
-    return Array.from(new Set(nomes)).sort();
-  }, [disciplines])
-
   const filteredDisciplines = disciplines.filter((discipline) => {
     const term = searchTerm.toLowerCase().trim();
     const matchesSearch = term === '' || 
@@ -99,9 +91,7 @@ const Disciplines = () => {
       }
     }
 
-    const matchesProfessor = filterProfessor === '' || discipline.professor?.nome === filterProfessor;
-
-    return matchesSearch && matchesHours && matchesProfessor;
+    return matchesSearch && matchesHours;
   });
 
   return (
@@ -131,9 +121,6 @@ const Disciplines = () => {
             onSearchChange={setSearchTerm}
             filterHours={filterHours}
             onFilterHoursChange={setFilterHours}
-            filterProfessor={filterProfessor}
-            onFilterProfessorChange={setFilterProfessor}
-            professoresDisponiveis={professoresUnicos}
           />
 
           <DisciplinesTable

@@ -1,4 +1,5 @@
-import { useState, ChangeEvent, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { ChangeEvent } from 'react';
 import { LocateFixed, Info, Signal, CheckCircle2 } from 'lucide-react';
 import Button from '../ui/Button';
 import useGeolocation from '../hooks/useGeolocation';

@@ -74,8 +74,8 @@ const HistoricoChamadaTable = ({ chamadas, turmas, isLoading }: HistoricoChamada
               chamadas.slice(0, 5).map((chamada) => {
                 const turmaObj = turmas.find(t => t.id === chamada.turma_id);
                 const nomeTurma = turmaObj?.codigo || `Turma #${chamada.turma_id}`;
-                const presencas = chamada.total_presencas || 0;
-                const totalAlunos = turmaObj?.alunos.length || 0;
+                const presencas = 0;
+                const totalAlunos = turmaObj?.alunos?.length || 0;
                 const porcentagem = Math.round((presencas / totalAlunos) * 100);
                 const isAberta = chamada.status === 'ABERTA';
                 return (

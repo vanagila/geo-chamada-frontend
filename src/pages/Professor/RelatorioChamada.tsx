@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { 
-  ArrowLeft, Calendar, MapPin, Download, Share, 
+  ArrowLeft, Calendar, 
   Users, CheckCircle2, XCircle, FileText, 
-  Filter, ArrowUpDown, AlertTriangle, MoreVertical, 
+  AlertTriangle, MoreVertical, 
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';

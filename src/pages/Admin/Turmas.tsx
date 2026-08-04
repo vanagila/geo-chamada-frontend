@@ -9,11 +9,11 @@ import CreateTurmaModal from '../../components/Turmas/CreateTurmaModal'
 import ConfirmDeleteModal from '../../components/ConfirmDeleteModal.tsx'
 import AssignProfessorModal from '../../components/Professor/AssignProfessorModal'
 import AssignAlunoModal from '../../components/Aluno/AssignAlunoModal'
-import type { Turma, TurmaFormData } from '../../types/turmas.types'
+import type { Turma } from '../../types/turmas.types'
 
 const Turmas = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingTurma, setEditingTurma] = useState<Disciplina | null>(null);
+  const [editingTurma, setEditingTurma] = useState<Turma | null>(null);
   const [turmaToDelete, setTurmaToDelete] = useState<Turma | null>(null);
   const [turmaParaVincularProfessor, setTurmaParaVincularProfessor] = useState<Turma | null>(null);
   const [turmaParaVincularAluno, setTurmaParaVincularAluno] = useState<Turma | null>(null);
@@ -29,7 +29,7 @@ const Turmas = () => {
     isDeleting
   } = useTurmas();
 
-  const handleSubmit = async (data: TurmaFormData) => {
+  const handleSubmit = async (data: any) => {
     if (editingTurma) {
       await updateTurma({ id: editingTurma.id, data });
     } else {
@@ -44,9 +44,12 @@ const Turmas = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteClick = (turma: Turma) => {
-    setTurmaToDelete(turma);
-  }
+  const handleDeleteClick = (id: number) => {
+    const turmaEncontrada = turmas.find(d => d.id === id);
+    if (turmaEncontrada) {
+      setTurmaToDelete(turmaEncontrada);
+    }
+  };
 
   const handleConfirmDelete = () => {
     if (!turmaToDelete) return;
@@ -121,9 +124,6 @@ const Turmas = () => {
           onClose={() => setTurmaParaVincularProfessor(null)}
           turmaId={turmaParaVincularProfessor.id}
           turmaCodigo={turmaParaVincularProfessor.codigo}
-          onSuccess={() => {
-            setTurmaParaVincularProfessor(null);
-          }}
         />
       )}
 
@@ -133,10 +133,7 @@ const Turmas = () => {
           onClose={() => setTurmaParaVincularAluno(null)}
           turmaId={turmaParaVincularAluno.id}
           turmaCodigo={turmaParaVincularAluno.codigo}
-          onSuccess={() => {
-            setTurmaParaVincularAluno(null);
-          }}
-        />
+       />
       )}
     </div>
   );

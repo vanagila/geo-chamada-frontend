@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 type BadgeVariant = 'success' | 'warning' | 'error' | 'default' | 'brand';
 
 interface BadgeProps {
-  children: ReacNode;
+  children: ReactNode;
   variant?: BadgeVariant;
 }
 

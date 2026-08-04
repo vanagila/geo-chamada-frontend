@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
@@ -94,7 +93,7 @@ const AlunoDashboard = () => {
           )}
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            <DistanceRadar distance={12} maxRadius={50} />
+            <DistanceRadar maxRadius={50} />
             <MapPreview />
           </div>
 

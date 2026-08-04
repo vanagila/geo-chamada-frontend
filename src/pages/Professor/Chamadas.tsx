@@ -2,17 +2,14 @@ import Header from '../../components/layout/Header';
 import Sidebar from '../../components/layout/Sidebar';
 import HistoricoChamadaTable from '../../components/Professor/HistoricoChamadaTable';
 import useChamadas from '../../hooks/useChamadas';
-import useAuth from '../../hooks/useAuth';
 import useTurmas from '../../hooks/useTurmas';
 
 const Chamadas = () => {
 
-  const { user } = useAuth();
-
   const { 
     allChamadasProfessor: chamadasOrdenadas,
     loadingAllChamadasProfessor
-  } = useChamadas(user?.id);
+  } = useChamadas();
 
   const { 
     turmasProfessor

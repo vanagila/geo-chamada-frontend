@@ -6,10 +6,9 @@ interface DisciplineRowProps {
   discipline: Disciplina;
   onEdit: (discipline: Disciplina) => void;
   onDelete: (id: number) => void;
-  isDeleting?: boolean;
 }
 
-const DisciplineRow = ({ discipline, onEdit, onDelete, isDeleting }: DisciplineRowProps) => {
+const DisciplineRow = ({ discipline, onEdit, onDelete }: DisciplineRowProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const getIconColor = (nome: string) => {
@@ -60,23 +59,6 @@ const DisciplineRow = ({ discipline, onEdit, onDelete, isDeleting }: DisciplineR
         <span className='px-2.5 py-1 rounded-md bg-input-bg text-text-muted text-xs font-bold uppercase border border-border'>
           {discipline.carga_horaria}h
         </span>
-      </td>
-      <td className='px-6 py-4'>
-        <div className='flex items-center gap-2'>
-          <div className='w-6 h-6 rounded-full bg-brand/20 flex items-center justify-center text-[10px] font-bold text-brand'>
-            {discipline.professor?.nome?.charAt(0) || '-'}
-          </div>
-          <span className='text-sm text-text-muted'>{discipline.professor?.nome || 'Sem professor'}</span>
-        </div>
-      </td>
-      <td className='px-6 py-4'>
-        <div className='flex items-center justify-center gap-1 flex-wrap'>
-          {discipline.turmas?.map((turma, index) => (
-            <span key={index} className='px-2 py-1 flex items-center justify-center rounded border border-border bg-card text-text-muted text-xs font-medium shadow-sm'>
-              {turma}
-            </span>
-          ))}
-        </div>
       </td>
       <td className='px-6 py-4 text-right'>
         <div className='flex items-center justify-end gap-2 group-hover:opacity-100 transition-opacity'>

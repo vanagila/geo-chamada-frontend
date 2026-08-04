@@ -1,8 +1,8 @@
 import type { Coordenadas } from './geo.types'
 import type { ProfessorSimplificado } from './user.types'
-import type { TurmaSimplificada } from './turmas.types'
+import type { Turma } from './turmas.types'
 
-export type StatusChamada = "ABERTA" | "ENCERRADA";
+export type ChamadaStatus = "ABERTA" | "ENCERRADA";
 
 export interface AbrirChamadaData {
   turma_id: number;
@@ -13,7 +13,7 @@ export interface AbrirChamadaData {
 export interface Chamada {
   id: number;
   turma_id: number;
-  turma?: TurmaSimplificada;
+  turma?: Turma;
   professor_id: number;
   professor?: ProfessorSimplificado;
   coordenadas_professor: Coordenadas;

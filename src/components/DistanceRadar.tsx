@@ -10,7 +10,7 @@ interface DistanceRadarProps {
   onDistanceChange?: (distance: number) => void;
 }
 
-const DistanceRadar = ({ chamadaCoordenadas, maxRadius, onDistanceChange }: DistanceRadarProps) => {
+const DistanceRadar = ({ chamadaCoordenadas, maxRadius = 150, onDistanceChange }: DistanceRadarProps) => {
 
   const [distance, setDistance] = useState<number>(0);
   const [isInRange, setIsInRange] = useState<boolean>(false);

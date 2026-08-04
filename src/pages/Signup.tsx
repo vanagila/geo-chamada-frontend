@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useAuth from '../hooks/useAuth';
 import { registerSchema, type RegisterFormData } from '../schemas/auth.schemas';
 
-const typeOptions: RadioOptions[] = [
+const typeOptions = [
   { label: 'Aluno', value: 'ALUNO', icon: <GraduationCap size={20} /> },
   { label: 'Professor', value: 'PROFESSOR', icon: <Presentation size={20} /> }
 ]

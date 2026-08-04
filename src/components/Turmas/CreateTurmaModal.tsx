@@ -5,19 +5,18 @@ import { X, Album } from 'lucide-react';
 import Button from '../../ui/Button'; 
 import Input from '../../ui/Input';
 import { turmaSchema } from '../../schemas/turma.schemas';
-import type { TurmaFormData, Turma } from '../../types/turmas.types'
+import type { TurmaCreate, Turma } from '../../types/turmas.types'
 import useDisciplines from '../../hooks/useDiscipline'
 
 interface CreateTurmaModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: TurmaFormData) => void;
+  onSubmit: (data: TurmaCreate) => void;
   isSubmitting?: boolean;
   initialData?: Turma | null;
-  disciplinas: Array<{ id: number; nome: string; codigo: string }>;
 }
 
-const getDefaultValues = (initialData?: Turma | null): TurmaFormData => ({
+const getDefaultValues = (initialData?: Turma | null): TurmaCreate => ({
   codigo: initialData?.codigo || '',
   disciplina_id: initialData?.disciplina_id || 0,
   semestre: initialData?.semestre || '',
@@ -34,7 +33,7 @@ const CreateTurmaModal = ({ isOpen, onClose, onSubmit, isSubmitting, initialData
     handleSubmit,
     reset,
     formState: {errors}
-  } = useForm<TurmaFormData>({
+  } = useForm<TurmaCreate>({
     resolver: zodResolver(turmaSchema),
     defaultValues: getDefaultValues(initialData)
   });

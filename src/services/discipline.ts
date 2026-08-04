@@ -1,5 +1,5 @@
 import api from './api';
-import type { Disciplina, DisciplinaCreate, DisciplinaUpdate, DisciplinaResponse, DisciplinaFormData } from '../types/discipline.types';
+import type { Disciplina, DisciplinaCreate, DisciplinaUpdate, DisciplinaResponse } from '../types/discipline.types';
 
 const disciplineService = {
   list: async (params?: { skip?: number; limit?: number }): Promise<DisciplinaResponse[]> => {

@@ -5,12 +5,9 @@ interface DisciplineFiltersProps {
   onSearchChange: (value: string) => void;
   filterHours: string;
   onFilterHoursChange: (value: string) => void;
-  filterProfessor: string;
-  onFilterProfessorChange: (value: string) => void;
-  professoresDisponiveis: string[];
 }
 
-const DisciplineFilters = ({ searchTerm, onSearchChange, filterHours, onFilterHoursChange, filterProfessor, onFilterProfessorChange, professoresDisponiveis }: DisciplineFiltersProps) => {
+const DisciplineFilters = ({ searchTerm, onSearchChange, filterHours, onFilterHoursChange }: DisciplineFiltersProps) => {
   return (
     <div className='bg-card border border-border rounded-xl p-6 shadow-sm'>
       <div className='grid grid-cols-1 md:grid-cols-12 gap-4'>
@@ -33,17 +30,6 @@ const DisciplineFilters = ({ searchTerm, onSearchChange, filterHours, onFilterHo
             <option value='40'>40h</option>
             <option value='60'>60h</option>
             <option value='90'>90h+</option>
-          </select>
-        </div>
-        <div className='md:col-span-3'>
-          <select 
-            value={filterProfessor}
-            onChange={(e) => onFilterProfessorChange(e.target.value)}
-            className='w-full px-4 py-2 bg-input-bg border border-border rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm outline-none text-text-muted cursor-pointer'>
-            <option value="">Professor (Todos)</option>
-            {professoresDisponiveis.map((nome, index) => (
-              <option key={index} value={nome}>{nome}</option>
-            ))}
           </select>
         </div>
         <div className='md:col-span-1'>

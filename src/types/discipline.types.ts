@@ -41,6 +41,6 @@ export interface DisciplinaResponse {
 export interface DisciplinaFormData {
   nome: string;
   codigo: string;
-  descricao: string;
+  descricao?: string | null;
   carga_horaria: number;
 }

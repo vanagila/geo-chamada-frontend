@@ -30,7 +30,7 @@ const CreateDisciplineModal = ({ isOpen, onClose, onSubmit, isSubmitting, initia
     reset,
     formState: { errors }
   } = useForm<DisciplinaFormData>({
-    resolver: zodResolver(disciplineSchema),
+    resolver: zodResolver(disciplineSchema) as any,
     defaultValues: getDefaultValues(initialData)
   });
 

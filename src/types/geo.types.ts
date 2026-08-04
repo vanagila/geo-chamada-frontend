@@ -12,7 +12,7 @@ export interface UseGeolocationOptions {
 }
 
 export interface UseGeolocationReturn {
-  coordernadas: Coordenadas | null;
+  coordenadas: Coordenadas | null;
   carregando: boolean;
   erro: string | null;
   hasLocation: boolean;

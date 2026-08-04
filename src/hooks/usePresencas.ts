@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import type { RegistrarPresencaData } from '../types/presencas.types.ts';
+import type { RegistrarPresencaData, PresencaResponse } from '../types/presencas.types.ts';
 import presencaService from '../services/presencas';
 
 const PRESENCAS_QUERY_KEY = ['presencas']
@@ -39,7 +39,7 @@ const usePresencas = () => {
       } else if (data.status === 'AUSENTE') {
         toast.error(`❌ Fora do raio de validação! Distância: ${data.distancia_calculada?.toFixed(0)}m`);
       } else {
-        toast.info(`📝 Status: ${data.status}`);
+        toast.error(`📝 Status: ${data.status}`);
       }
       
       // Invalida queries para recarregar dados atualizados

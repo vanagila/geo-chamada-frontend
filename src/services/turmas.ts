@@ -17,12 +17,12 @@ const turmaService = {
     return response.data
   },
 
-  getByProfessor: async (professorId: number): Promise<TurmaResponse> => {
+  getByProfessor: async (professorId: number): Promise<Turma[]> => {
     const response = await api.get(`/api/v1/turmas/professor/${professorId}`);
     return response.data
   },
 
-  getByAluno: async (alunoId: number): Promise<TurmaResponse> => {
+  getByAluno: async (alunoId: number): Promise<Turma[]> => {
     const response = await api.get(`/api/v1/turmas/aluno/${alunoId}`);
     return response.data
   },

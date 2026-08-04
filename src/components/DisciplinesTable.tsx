@@ -7,7 +7,7 @@ interface DisciplinesTableProps {
   disciplines: Disciplina[];
   isLoading: boolean;
   onEdit: (disciplina: Disciplina) => void;
-  onDelete: (disciplina: Disciplina) => void;
+  onDelete: (id: number) => void;
 }
 
 const DisciplinesTable = ({ disciplines, isLoading, onEdit, onDelete }: DisciplinesTableProps) => {
@@ -18,8 +18,6 @@ const DisciplinesTable = ({ disciplines, isLoading, onEdit, onDelete }: Discipli
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Nome</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Código</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Carga Horária</th>
-          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider'>Professor Responsável</th>
-          <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-center'>Turmas</th>
           <th className='px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right'>Ações</th>
         </tr>
       </thead>
